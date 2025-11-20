@@ -61,7 +61,7 @@ function App()
 	const decrementQuantity = (itemName) => {
 		setItems(prevItems => {
 			const updatedItems = prevItems.map(item => {
-				if (item.name === itemName && item.quantity > 1) {
+				if (item.name === itemName && item.quantity > 0) {
 					return { ...item, quantity: item.quantity - 1 }
 				}
 				return item
