@@ -5,7 +5,7 @@ import { InventoryContext } from '../contexts/InventoryContext'
 
 export default function Home({ isDarkMode })
 {
-    const { items, addItem, deleteItem } = useContext(InventoryContext)
+    const { items, addItem, deleteItem, incrementQuantity, decrementQuantity } = useContext(InventoryContext)
     const [inputValue, setInputValue] = useState('')
     const [quantity, setQuantity] = useState(1)
     const nameInputRef = useRef(null)
@@ -58,6 +58,8 @@ export default function Home({ isDarkMode })
                                     item={item} 
                                     isDarkMode={isDarkMode}
                                     onDelete={() => handleDelete(item.name)}
+                                    onIncrement={() => incrementQuantity(item.name)}
+                                    onDecrement={() => decrementQuantity(item.name)}
                                 />
                             ))}
                         </ListGroup>

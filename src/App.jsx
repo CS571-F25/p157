@@ -46,6 +46,30 @@ function App()
 		setItems(prevItems => prevItems.filter(item => item.name !== itemName))
 	}
 
+	const incrementQuantity = (itemName) => {
+		setItems(prevItems => {
+			const updatedItems = prevItems.map(item => {
+				if (item.name === itemName) {
+					return { ...item, quantity: item.quantity + 1 }
+				}
+				return item
+			})
+			return updatedItems
+		})
+	}
+
+	const decrementQuantity = (itemName) => {
+		setItems(prevItems => {
+			const updatedItems = prevItems.map(item => {
+				if (item.name === itemName && item.quantity > 1) {
+					return { ...item, quantity: item.quantity - 1 }
+				}
+				return item
+			})
+			return updatedItems
+		})
+	}
+
 	useEffect(() => {
 		if (isDarkMode) {
 			document.body.style.backgroundColor = '#242424'
@@ -57,7 +81,7 @@ function App()
 	}, [isDarkMode])
 
 	return <HashRouter>
-		<InventoryContext.Provider value={{ items, addItem, deleteItem }}>
+		<InventoryContext.Provider value={{ items, addItem, deleteItem, incrementQuantity, decrementQuantity }}>
 			<button
 				onClick={toggleSidebar}
 				style={{

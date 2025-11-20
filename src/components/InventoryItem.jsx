@@ -1,6 +1,6 @@
 import { ListGroup } from 'react-bootstrap'
 
-export default function InventoryItem({ item, isDarkMode, onDelete }) {
+export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement, onDecrement }) {
     return (
         <ListGroup.Item 
             style={{
@@ -13,21 +13,53 @@ export default function InventoryItem({ item, isDarkMode, onDelete }) {
             }}
         >
             <span>{item.name} (Quantity: {item.quantity})</span>
-            <button
-                onClick={onDelete}
-                style={{
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    color: isDarkMode ? 'rgba(255, 255, 255, 0.87)' : '#213547',
-                    cursor: 'pointer',
-                    fontSize: '1.2rem',
-                    padding: '0 5px',
-                    lineHeight: '1'
-                }}
-                aria-label="Delete item"
-            >
-                ×
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <button
+                    onClick={onIncrement}
+                    style={{
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        color: isDarkMode ? 'rgba(255, 255, 255, 0.87)' : '#213547',
+                        cursor: 'pointer',
+                        fontSize: '1.2rem',
+                        padding: '0 5px',
+                        lineHeight: '1'
+                    }}
+                    aria-label="Increment quantity"
+                >
+                    +
+                </button>
+                <button
+                    onClick={onDecrement}
+                    style={{
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        color: isDarkMode ? 'rgba(255, 255, 255, 0.87)' : '#213547',
+                        cursor: 'pointer',
+                        fontSize: '1.2rem',
+                        padding: '0 5px',
+                        lineHeight: '1'
+                    }}
+                    aria-label="Decrement quantity"
+                >
+                    −
+                </button>
+                <button
+                    onClick={onDelete}
+                    style={{
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        color: isDarkMode ? 'rgba(255, 255, 255, 0.87)' : '#213547',
+                        cursor: 'pointer',
+                        fontSize: '1.2rem',
+                        padding: '0 5px',
+                        lineHeight: '1'
+                    }}
+                    aria-label="Delete item"
+                >
+                    🗑️
+                </button>
+            </div>
         </ListGroup.Item>
     )
 }
