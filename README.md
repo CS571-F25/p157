@@ -2,6 +2,31 @@
 
 This project is meant to serve as an inventory manager, allowing the user to create inventory entries and get reminders for items which are out of stock.
 
+## Base features:
+- Add items to your inventory, specifying your current stock of
+the item if desired
+- Give your items premade or custom tags
+- Search through your inventory by name or by tags
+- Note a decrease in your stock of an item
+- Set a minimum stock of an item you wish to maintain
+- See a shopping list with items which have gone below their
+minimum stock
+- Client-side storage of inventory (i.e. per-browser)
+- Mobile-friendly design.
+
+## Goal features:
+- Add items to your inventory by taking a picture of them
+- Suggest a name for items added by picture (object classification
+model AND/OR barcode scanner)
+- Suggest tags for items added by picture (word2vec similarity?)
+- Search through your inventory by name (fuzzy search)
+- Server-side storage of inventory (log in via email???)
+
+# For the student working on this (me)
+
+- `npm run dev` to see in browser with live reload
+- `npm run build` before each push to ensure the website is properly shown on GitHub
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
