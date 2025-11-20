@@ -1,10 +1,11 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useContext } from 'react'
 import { Container, Row, Col, Form, ListGroup, InputGroup } from 'react-bootstrap'
 import InventoryItem from './InventoryItem'
+import { InventoryContext } from '../contexts/InventoryContext'
 
 export default function Home({ isDarkMode })
 {
-    const [items, setItems] = useState([])
+    const { items, addItem, deleteItem } = useContext(InventoryContext)
     const [inputValue, setInputValue] = useState('')
     const [quantity, setQuantity] = useState(1)
     const nameInputRef = useRef(null)
@@ -12,25 +13,7 @@ export default function Home({ isDarkMode })
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' && inputValue.trim() !== '') {
             const itemName = inputValue.trim()
-            const quantityNum = parseInt(quantity) || 1
-            
-            setItems(prevItems => {
-                const existingItemIndex = prevItems.findIndex(item => item.name === itemName)
-                
-                if (existingItemIndex !== -1) {
-                    // Item exists, update its quantity
-                    const updatedItems = [...prevItems]
-                    updatedItems[existingItemIndex] = {
-                        ...updatedItems[existingItemIndex],
-                        quantity: updatedItems[existingItemIndex].quantity + quantityNum
-                    }
-                    return updatedItems
-                } else {
-                    // Item doesn't exist, add new item
-                    return [...prevItems, { name: itemName, quantity: quantityNum }]
-                }
-            })
-            
+            addItem(itemName, quantity)
             setInputValue('')
             setQuantity(1)
             nameInputRef.current?.focus()
@@ -38,7 +21,7 @@ export default function Home({ isDarkMode })
     }
 
     const handleDelete = (itemName) => {
-        setItems(prevItems => prevItems.filter(item => item.name !== itemName))
+        deleteItem(itemName)
     }
 
     return (
