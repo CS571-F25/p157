@@ -1,3 +1,7 @@
+# Inventory Manager
+
+This project is meant to serve as an inventory manager, allowing the user to create inventory entries and get reminders for items which are out of stock.
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
