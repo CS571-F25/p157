@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { Container, Row, Col, Form, ListGroup, InputGroup } from 'react-bootstrap'
+import InventoryItem from './InventoryItem'
 
 export default function Home({ isDarkMode })
 {
@@ -36,6 +37,10 @@ export default function Home({ isDarkMode })
         }
     }
 
+    const handleDelete = (itemName) => {
+        setItems(prevItems => prevItems.filter(item => item.name !== itemName))
+    }
+
     return (
         <Container className="mt-5" style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.87)' : '#213547' }}>
             <Row className="justify-content-center">
@@ -65,9 +70,12 @@ export default function Home({ isDarkMode })
                     {items.length > 0 && (
                         <ListGroup>
                             {items.map((item, index) => (
-                                <ListGroup.Item key={index}>
-                                    {item.name} (Quantity: {item.quantity})
-                                </ListGroup.Item>
+                                <InventoryItem 
+                                    key={index} 
+                                    item={item} 
+                                    isDarkMode={isDarkMode}
+                                    onDelete={() => handleDelete(item.name)}
+                                />
                             ))}
                         </ListGroup>
                     )}
