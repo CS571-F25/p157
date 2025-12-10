@@ -94,13 +94,17 @@ export const getNavbarStyles = (isDarkMode) => {
     nav: {
       flex: 1
     },
-    getNavLink: (isActive, isDarkMode) => ({
-      color: isActive
-        ? (isDarkMode ? 'white' : '#212529')
-        : (isDarkMode ? 'rgba(255, 255, 255, 0.55)' : 'rgba(33, 37, 41, 0.55)'),
-      padding: '10px 0',
-      fontSize: '1.1rem'
-    }),
+    getNavLink: (isActive, isDarkMode) => {
+      const colors = isDarkMode ? themeColors.dark : themeColors.light
+      return {
+        color: colors.sidebarText,
+        padding: '10px 15px',
+        fontSize: '1.1rem',
+        borderRadius: '4px',
+        backgroundColor: isActive ? (isDarkMode ? '#495057' : '#e9ecef') : 'transparent',
+        marginBottom: '5px'
+      }
+    },
     themeToggleButton: {
       position: 'absolute',
       bottom: '20px',
@@ -149,6 +153,9 @@ export const getInventoryItemStyles = (isDarkMode) => {
       height: '20px',
       backgroundColor: colors.separator,
       margin: '0 10px'
+    },
+    lowStockName: {
+      color: '#dc3545'
     }
   }
 }

@@ -7,8 +7,8 @@ This project is meant to serve as an inventory manager, allowing the user to cre
 - [ ] Give your items premade or custom tags
 - [ ] Search through your inventory by name or by tags
 - [ ] Note a decrease in your stock of an item
-- [ ] Set a minimum stock of an item you wish to maintain
-- [ ] See a shopping list with items which have gone below their minimum stock
+- [x] Set a minimum stock of an item you wish to maintain
+- [x] See a shopping list with items which have gone below their minimum stock
 minimum stock
 - [x] Client-side storage of inventory (i.e. per-browser)
 - [ ] Mobile-friendly design.

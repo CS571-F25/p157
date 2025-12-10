@@ -11,7 +11,7 @@ export default function Inventory({ isDarkMode })
     const { items, addItem, deleteItem, incrementQuantity, decrementQuantity, updateItem } = useContext(InventoryContext)
     const [inputValue, setInputValue] = useState('')
     const [quantity, setQuantity] = useState(1)
-    const [minDesiredStock, setMinDesiredStock] = useState(1)
+    const [minDesiredStock, setMinDesiredStock] = useState(0)
     const [isAddButtonHovered, setIsAddButtonHovered] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
@@ -84,7 +84,7 @@ export default function Inventory({ isDarkMode })
                             <InputGroup.Text>Qty:</InputGroup.Text>
                             <Form.Control
                                 type="number"
-                                min="1"
+                                min="0"
                                 value={quantity}
                                 onChange={(e) => setQuantity(e.target.value)}
                                 onKeyDown={handleKeyPress}
@@ -93,7 +93,7 @@ export default function Inventory({ isDarkMode })
                             <InputGroup.Text>Min:</InputGroup.Text>
                             <Form.Control
                                 type="number"
-                                min="1"
+                                min="0"
                                 value={minDesiredStock}
                                 onChange={(e) => setMinDesiredStock(e.target.value)}
                                 onKeyDown={handleKeyPress}

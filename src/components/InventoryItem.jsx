@@ -3,6 +3,8 @@ import { getInventoryItemStyles } from '../Styles'
 
 export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement, onDecrement, onClick }) {
     const styles = getInventoryItemStyles(isDarkMode)
+    const minDesiredStock = item.minDesiredStock ?? 1
+    const isLowStock = item.quantity < minDesiredStock
 
     const handleItemClick = (e) => {
         // Don't trigger if clicking on buttons
@@ -28,7 +30,7 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
                 >
                     +
                 </button>
-                <span style={styles.quantity}>{item.quantity}</span>
+                <span style={isLowStock ? { ...styles.quantity, ...styles.lowStockName } : styles.quantity}>{item.quantity}</span>
                 <button
                     onClick={(e) => {
                         e.stopPropagation()
@@ -40,7 +42,7 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
                     −
                 </button>
                 <div style={styles.separator} />
-                <span>{item.name}</span>
+                <span style={isLowStock ? styles.lowStockName : {}}>{item.name}</span>
             </div>
             <button
                 onClick={(e) => {
