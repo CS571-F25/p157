@@ -2,18 +2,31 @@ import { useState, useRef, useContext, useMemo } from 'react'
 import { Container, Row, Col, Form, ListGroup, InputGroup } from 'react-bootstrap'
 import Fuse from 'fuse.js'
 import InventoryItem from './InventoryItem'
+import InventoryItemModal from './InventoryItemModal'
 import { InventoryContext } from '../contexts/InventoryContext'
 import { getPageStyles } from '../Styles'
 
 export default function Inventory({ isDarkMode })
 {
-    const { items, addItem, deleteItem, incrementQuantity, decrementQuantity } = useContext(InventoryContext)
+    const { items, addItem, deleteItem, incrementQuantity, decrementQuantity, updateItem } = useContext(InventoryContext)
     const [inputValue, setInputValue] = useState('')
     const [quantity, setQuantity] = useState(1)
     const [isAddButtonHovered, setIsAddButtonHovered] = useState(false)
+    const [showModal, setShowModal] = useState(false)
+    const [selectedItem, setSelectedItem] = useState(null)
     const nameInputRef = useRef(null)
 
     const styles = getPageStyles(isDarkMode)
+
+    const handleItemClick = (item) => {
+        setSelectedItem(item)
+        setShowModal(true)
+    }
+
+    const handleCloseModal = () => {
+        setShowModal(false)
+        setSelectedItem(null)
+    }
 
     // Use Fuse.js for fuzzy search
     const sortedItems = useMemo(() => {
@@ -110,12 +123,20 @@ export default function Inventory({ isDarkMode })
                                     onDelete={() => handleDelete(item.name)}
                                     onIncrement={() => incrementQuantity(item.name)}
                                     onDecrement={() => decrementQuantity(item.name)}
+                                    onClick={() => handleItemClick(item)}
                                 />
                             ))}
                         </ListGroup>
                     )}
                 </Col>
             </Row>
+            <InventoryItemModal
+                show={showModal}
+                item={selectedItem}
+                isDarkMode={isDarkMode}
+                updateItem={updateItem}
+                onHide={handleCloseModal}
+            />
         </Container>
     )
 }

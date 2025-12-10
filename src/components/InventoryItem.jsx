@@ -1,14 +1,28 @@
 import { ListGroup } from 'react-bootstrap'
 import { getInventoryItemStyles } from '../Styles'
 
-export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement, onDecrement }) {
+export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement, onDecrement, onClick }) {
     const styles = getInventoryItemStyles(isDarkMode)
 
+    const handleItemClick = (e) => {
+        // Don't trigger if clicking on buttons
+        if (e.target.tagName === 'BUTTON') {
+            return
+        }
+        onClick()
+    }
+
     return (
-        <ListGroup.Item style={styles.listItem}>
+        <ListGroup.Item 
+            style={{ ...styles.listItem, cursor: 'pointer' }}
+            onClick={handleItemClick}
+        >
             <div style={styles.controlsContainer}>
                 <button
-                    onClick={onIncrement}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        onIncrement()
+                    }}
                     style={styles.button}
                     aria-label="Increment quantity"
                 >
@@ -16,7 +30,10 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
                 </button>
                 <span style={styles.quantity}>{item.quantity}</span>
                 <button
-                    onClick={onDecrement}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        onDecrement()
+                    }}
                     style={styles.button}
                     aria-label="Decrement quantity"
                 >
@@ -26,7 +43,10 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
                 <span>{item.name}</span>
             </div>
             <button
-                onClick={onDelete}
+                onClick={(e) => {
+                    e.stopPropagation()
+                    onDelete()
+                }}
                 style={styles.button}
                 aria-label="Delete item"
             >

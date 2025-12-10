@@ -173,6 +173,25 @@ export const getPageStyles = (isDarkMode) => {
       marginTop: '-0.5rem',
       marginBottom: '1rem'
     },
+    modal: {
+      zIndex: 1050
+    },
+    modalHeader: {
+      backgroundColor: colors.itemBg,
+      color: colors.text,
+      borderBottom: `1px solid ${colors.itemBorder}`
+    },
+    modalTitle: {
+      color: colors.text
+    },
+    modalBody: {
+      backgroundColor: colors.background,
+      color: colors.text
+    },
+    modalFooter: {
+      backgroundColor: colors.itemBg,
+      borderTop: `1px solid ${colors.itemBorder}`
+    },
     addButton: {
       backgroundColor: '#dc3545',
       color: 'white',

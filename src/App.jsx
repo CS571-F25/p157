@@ -89,6 +89,16 @@ function App()
 		updateItems(updatedItems)
 	}
 
+	const updateItem = (oldName, newName, newQuantity) => {
+		const updatedItems = items.map(item => {
+			if (item.name === oldName) {
+				return { name: newName, quantity: parseInt(newQuantity) || 1 }
+			}
+			return item
+		})
+		updateItems(updatedItems)
+	}
+
 	useEffect(() => {
 		if (isDarkMode) {
 			document.body.style.backgroundColor = '#242424'
@@ -102,7 +112,7 @@ function App()
 	const styles = getAppStyles(isDarkMode, sidebarVisible)
 
 	return <HashRouter>
-		<InventoryContext.Provider value={{ items, addItem, deleteItem, incrementQuantity, decrementQuantity }}>
+		<InventoryContext.Provider value={{ items, addItem, deleteItem, incrementQuantity, decrementQuantity, updateItem }}>
 			<button
 				onClick={toggleSidebar}
 				style={styles.hamburgerButton}
