@@ -18,7 +18,12 @@ function App()
 	const loadItemsFromStorage = () => {
 		try {
 			const storedItems = localStorage.getItem('inventory')
-			return storedItems ? JSON.parse(storedItems) : []
+			const items = storedItems ? JSON.parse(storedItems) : []
+			// Ensure all items have minDesiredStock (default to 1 if missing)
+			return items.map(item => ({
+				...item,
+				minDesiredStock: item.minDesiredStock ?? 1
+			}))
 		} catch (error) {
 			console.error('Error loading items from localStorage:', error)
 			return []
@@ -45,8 +50,9 @@ function App()
 		setIsDarkMode(!isDarkMode)
 	}
 
-	const addItem = (itemName, quantity) => {
+	const addItem = (itemName, quantity, minDesiredStock = 1) => {
 		const quantityNum = parseInt(quantity) || 1
+		const minDesiredStockNum = parseInt(minDesiredStock) || 1
 		const existingItemIndex = items.findIndex(item => item.name === itemName)
 		
 		let updatedItems
@@ -55,11 +61,12 @@ function App()
 			updatedItems = [...items]
 			updatedItems[existingItemIndex] = {
 				...updatedItems[existingItemIndex],
-				quantity: updatedItems[existingItemIndex].quantity + quantityNum
+				quantity: updatedItems[existingItemIndex].quantity + quantityNum,
+				minDesiredStock: updatedItems[existingItemIndex].minDesiredStock ?? 1
 			}
 		} else {
 			// Item doesn't exist, add new item
-			updatedItems = [...items, { name: itemName, quantity: quantityNum }]
+			updatedItems = [...items, { name: itemName, quantity: quantityNum, minDesiredStock: minDesiredStockNum }]
 		}
 		updateItems(updatedItems)
 	}
@@ -72,7 +79,11 @@ function App()
 	const incrementQuantity = (itemName) => {
 		const updatedItems = items.map(item => {
 			if (item.name === itemName) {
-				return { ...item, quantity: item.quantity + 1 }
+				return { 
+					...item, 
+					quantity: item.quantity + 1,
+					minDesiredStock: item.minDesiredStock ?? 1
+				}
 			}
 			return item
 		})
@@ -82,17 +93,39 @@ function App()
 	const decrementQuantity = (itemName) => {
 		const updatedItems = items.map(item => {
 			if (item.name === itemName && item.quantity > 0) {
-				return { ...item, quantity: item.quantity - 1 }
+				return { 
+					...item, 
+					quantity: item.quantity - 1,
+					minDesiredStock: item.minDesiredStock ?? 1
+				}
 			}
 			return item
 		})
 		updateItems(updatedItems)
 	}
 
-	const updateItem = (oldName, newName, newQuantity) => {
+	const updateItem = (oldName, newName, newQuantity, newMinDesiredStock = null) => {
 		const updatedItems = items.map(item => {
 			if (item.name === oldName) {
-				return { name: newName, quantity: parseInt(newQuantity) || 1 }
+				return { 
+					name: newName, 
+					quantity: parseInt(newQuantity) || 1,
+					minDesiredStock: newMinDesiredStock !== null ? (parseInt(newMinDesiredStock) || 1) : (item.minDesiredStock ?? 1)
+				}
+			}
+			return item
+		})
+		updateItems(updatedItems)
+	}
+
+	const setQuantityToMinDesiredStock = (itemName) => {
+		const updatedItems = items.map(item => {
+			if (item.name === itemName) {
+				const minDesiredStock = item.minDesiredStock ?? 1
+				return { 
+					...item, 
+					quantity: minDesiredStock
+				}
 			}
 			return item
 		})
@@ -112,7 +145,7 @@ function App()
 	const styles = getAppStyles(isDarkMode, sidebarVisible)
 
 	return <HashRouter>
-		<InventoryContext.Provider value={{ items, addItem, deleteItem, incrementQuantity, decrementQuantity, updateItem }}>
+		<InventoryContext.Provider value={{ items, addItem, deleteItem, incrementQuantity, decrementQuantity, updateItem, setQuantityToMinDesiredStock }}>
 			<button
 				onClick={toggleSidebar}
 				style={styles.hamburgerButton}

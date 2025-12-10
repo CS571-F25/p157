@@ -226,6 +226,42 @@ export const getShoppingListStyles = (isDarkMode) => {
   }
 }
 
+// ShoppingListItem.jsx styles
+export const getShoppingListItemStyles = (isDarkMode) => {
+  const colors = isDarkMode ? themeColors.dark : themeColors.light
+  return {
+    listItem: {
+      backgroundColor: colors.itemBg,
+      color: colors.text,
+      borderColor: colors.itemBorder,
+      display: 'flex',
+      alignItems: 'center'
+    },
+    contentContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      width: '100%'
+    },
+    checkbox: {
+      cursor: 'pointer',
+      width: '18px',
+      height: '18px'
+    },
+    checkmark: {
+      color: '#28a745',
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+      width: '18px',
+      display: 'inline-block',
+      textAlign: 'center'
+    },
+    itemName: {
+      flex: 1
+    }
+  }
+}
+
 // AboutMe.jsx styles
 export const getAboutMeStyles = (isDarkMode) => {
   const colors = isDarkMode ? themeColors.dark : themeColors.light

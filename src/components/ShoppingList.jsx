@@ -1,12 +1,16 @@
 import { useContext } from 'react'
 import { Container, Row, Col, ListGroup } from 'react-bootstrap'
 import { InventoryContext } from '../contexts/InventoryContext'
+import ShoppingListItem from './ShoppingListItem'
 import { getPageStyles, getShoppingListStyles } from '../Styles'
 
 export default function ShoppingList({ isDarkMode })
 {
-    const { items } = useContext(InventoryContext)
-    const lowQuantityItems = items.filter(item => item.quantity < 1)
+    const { items, setQuantityToMinDesiredStock } = useContext(InventoryContext)
+    const lowQuantityItems = items.filter(item => {
+        const minDesiredStock = item.minDesiredStock ?? 1
+        return item.quantity < minDesiredStock
+    })
 
     const pageStyles = getPageStyles(isDarkMode)
     const listStyles = getShoppingListStyles(isDarkMode)
@@ -19,12 +23,12 @@ export default function ShoppingList({ isDarkMode })
                     {lowQuantityItems.length > 0 ? (
                         <ListGroup>
                             {lowQuantityItems.map((item, index) => (
-                                <ListGroup.Item 
+                                <ShoppingListItem
                                     key={index}
-                                    style={listStyles.listItem}
-                                >
-                                    {item.name} (Quantity: {item.quantity})
-                                </ListGroup.Item>
+                                    item={item}
+                                    isDarkMode={isDarkMode}
+                                    onCheck={() => setQuantityToMinDesiredStock(item.name)}
+                                />
                             ))}
                         </ListGroup>
                     ) : (

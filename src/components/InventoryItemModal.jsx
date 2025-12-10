@@ -5,6 +5,7 @@ import { getPageStyles } from '../Styles'
 export default function InventoryItemModal({ show, item, isDarkMode, updateItem, onHide }) {
     const [editName, setEditName] = useState('')
     const [editQuantity, setEditQuantity] = useState(1)
+    const [editMinDesiredStock, setEditMinDesiredStock] = useState(1)
     const currentItemNameRef = useRef('')
 
     const styles = getPageStyles(isDarkMode)
@@ -14,6 +15,7 @@ export default function InventoryItemModal({ show, item, isDarkMode, updateItem,
         if (item) {
             setEditName(item.name)
             setEditQuantity(item.quantity)
+            setEditMinDesiredStock(item.minDesiredStock ?? 1)
             currentItemNameRef.current = item.name
         }
     }, [item])
@@ -34,7 +36,7 @@ export default function InventoryItemModal({ show, item, isDarkMode, updateItem,
         setEditName(newName)
         if (currentItemNameRef.current && newName.trim() !== '') {
             const oldName = currentItemNameRef.current
-            updateItem(oldName, newName.trim(), editQuantity)
+            updateItem(oldName, newName.trim(), editQuantity, editMinDesiredStock)
             // Update the ref to the new name for future updates
             currentItemNameRef.current = newName.trim()
         }
@@ -45,13 +47,21 @@ export default function InventoryItemModal({ show, item, isDarkMode, updateItem,
         setEditQuantity(newQuantity)
         if (currentItemNameRef.current) {
             // Use currentItemNameRef as both old and new name since we're only changing quantity
-            updateItem(currentItemNameRef.current, currentItemNameRef.current, newQuantity)
+            updateItem(currentItemNameRef.current, currentItemNameRef.current, newQuantity, editMinDesiredStock)
+        }
+    }
+
+    const handleMinDesiredStockChange = (e) => {
+        const newMinDesiredStock = parseInt(e.target.value) || 1
+        setEditMinDesiredStock(newMinDesiredStock)
+        if (currentItemNameRef.current) {
+            updateItem(currentItemNameRef.current, currentItemNameRef.current, editQuantity, newMinDesiredStock)
         }
     }
 
     const handleSaveChanges = () => {
         if (currentItemNameRef.current && editName.trim() !== '') {
-            updateItem(currentItemNameRef.current, editName.trim(), editQuantity)
+            updateItem(currentItemNameRef.current, editName.trim(), editQuantity, editMinDesiredStock)
             onHide()
         }
     }
@@ -81,13 +91,27 @@ export default function InventoryItemModal({ show, item, isDarkMode, updateItem,
                         }}
                     />
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className="mb-3">
                     <Form.Label>Quantity</Form.Label>
                     <Form.Control
                         type="number"
                         min="0"
                         value={editQuantity}
                         onChange={handleQuantityChange}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleSaveChanges()
+                            }
+                        }}
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Minimum Desired Stock</Form.Label>
+                    <Form.Control
+                        type="number"
+                        min="1"
+                        value={editMinDesiredStock}
+                        onChange={handleMinDesiredStockChange}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                                 handleSaveChanges()
