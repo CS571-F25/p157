@@ -172,6 +172,25 @@ export const getPageStyles = (isDarkMode) => {
       opacity: 0.7,
       marginTop: '-0.5rem',
       marginBottom: '1rem'
+    },
+    addButton: {
+      backgroundColor: '#dc3545',
+      color: 'white',
+      border: 'none',
+      padding: '6px 12px',
+      cursor: 'pointer',
+      fontSize: '0.875rem',
+      fontWeight: '500',
+      borderRadius: '0.375rem',
+      transition: 'background-color 0.2s'
+    },
+    addButtonDisabled: {
+      backgroundColor: '#6c757d',
+      cursor: 'not-allowed',
+      opacity: 0.6
+    },
+    addButtonHover: {
+      backgroundColor: '#bb2d3b'
     }
   }
 }

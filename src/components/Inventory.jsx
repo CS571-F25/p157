@@ -10,6 +10,7 @@ export default function Inventory({ isDarkMode })
     const { items, addItem, deleteItem, incrementQuantity, decrementQuantity } = useContext(InventoryContext)
     const [inputValue, setInputValue] = useState('')
     const [quantity, setQuantity] = useState(1)
+    const [isAddButtonHovered, setIsAddButtonHovered] = useState(false)
     const nameInputRef = useRef(null)
 
     const styles = getPageStyles(isDarkMode)
@@ -30,13 +31,19 @@ export default function Inventory({ isDarkMode })
         return results.map(result => result.item)
     }, [items, inputValue])
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter' && inputValue.trim() !== '') {
+    const handleAddItem = () => {
+        if (inputValue.trim() !== '') {
             const itemName = inputValue.trim()
             addItem(itemName, quantity)
             setInputValue('')
             setQuantity(1)
             nameInputRef.current?.focus()
+        }
+    }
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter' && inputValue.trim() !== '') {
+            handleAddItem()
         }
     }
 
@@ -68,6 +75,26 @@ export default function Inventory({ isDarkMode })
                                 onKeyDown={handleKeyPress}
                                 style={styles.quantityInput}
                             />
+                            <button
+                                type="button"
+                                onClick={handleAddItem}
+                                disabled={inputValue.trim() === ''}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && inputValue.trim() !== '') {
+                                        handleAddItem()
+                                    }
+                                }}
+                                onMouseEnter={() => !(inputValue.trim() === '') && setIsAddButtonHovered(true)}
+                                onMouseLeave={() => setIsAddButtonHovered(false)}
+                                style={{
+                                    ...styles.addButton,
+                                    ...(inputValue.trim() === '' ? styles.addButtonDisabled : {}),
+                                    ...(isAddButtonHovered && inputValue.trim() !== '' ? styles.addButtonHover : {})
+                                }}
+                                aria-label="Add item"
+                            >
+                                Add
+                            </button>
                         </InputGroup>
                     </Form.Group>
                     {inputValue.trim() !== '' && (
