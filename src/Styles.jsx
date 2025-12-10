@@ -155,7 +155,8 @@ export const getInventoryItemStyles = (isDarkMode) => {
       margin: '0 10px'
     },
     lowStockName: {
-      color: '#dc3545'
+      color: isDarkMode ? '#ffb3ba' : '#c62828',
+      fontWeight: 'bold'
     }
   }
 }
