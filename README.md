@@ -18,7 +18,7 @@ minimum stock
 - [ ] Suggest a name for items added by picture (object classification
 model AND/OR barcode scanner)
 - [ ] Suggest tags for items added by picture (word2vec similarity?)
-- [ ] Search through your inventory by name (fuzzy search)
+- [x] Search through your inventory by name (fuzzy search)
 - [ ] Server-side storage of inventory (log in via email???)
 
 # For the student working on this (me)
@@ -26,7 +26,7 @@ model AND/OR barcode scanner)
 - `npm run dev` to see in browser with live reload
 - `npm run build` before each push to ensure the website is properly shown on GitHub
 
-Consider using https://www.fusejs.io/ for fuzzy search in the search bar
+This project uses https://www.fusejs.io/ for fuzzy search in the search bar
 
 # React + Vite
 
