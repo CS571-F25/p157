@@ -3,7 +3,7 @@ import { HashRouter, Route, Routes } from 'react-router'
 import { Container } from 'react-bootstrap'
 import './App.css'
 import AboutMe from './components/AboutMe'
-import Home from './components/Home'
+import Inventory from './components/Inventory'
 import ShoppingList from './components/ShoppingList'
 import NavigationBar from './components/Navbar'
 import { InventoryContext } from './contexts/InventoryContext'
@@ -119,7 +119,7 @@ function App()
 					style={styles.mainContainer}
 				>
 					<Routes>
-						<Route path="/" element={<Home isDarkMode={isDarkMode}></Home>}></Route>
+						<Route path="/" element={<Inventory isDarkMode={isDarkMode}></Inventory>}></Route>
 						<Route path="/about" element={<AboutMe isDarkMode={isDarkMode}></AboutMe>}></Route>
 						<Route path="/shopping-list" element={<ShoppingList isDarkMode={isDarkMode}></ShoppingList>}></Route>
 					</Routes>

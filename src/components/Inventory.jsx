@@ -4,7 +4,7 @@ import InventoryItem from './InventoryItem'
 import { InventoryContext } from '../contexts/InventoryContext'
 import { getPageStyles } from '../Styles'
 
-export default function Home({ isDarkMode })
+export default function Inventory({ isDarkMode })
 {
     const { items, addItem, deleteItem, incrementQuantity, decrementQuantity } = useContext(InventoryContext)
     const [inputValue, setInputValue] = useState('')
@@ -72,3 +72,4 @@ export default function Home({ isDarkMode })
         </Container>
     )
 }
+

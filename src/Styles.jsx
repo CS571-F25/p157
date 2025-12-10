@@ -153,7 +153,7 @@ export const getInventoryItemStyles = (isDarkMode) => {
   }
 }
 
-// Home.jsx and ShoppingList.jsx shared styles
+// Inventory.jsx and ShoppingList.jsx shared styles
 export const getPageStyles = (isDarkMode) => {
   const colors = isDarkMode ? themeColors.dark : themeColors.light
   return {
