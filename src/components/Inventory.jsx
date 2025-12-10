@@ -80,6 +80,7 @@ export default function Inventory({ isDarkMode })
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
                                 onKeyDown={handleKeyPress}
+                                aria-label="Search / Add item"
                             />
                             <InputGroup.Text>Qty:</InputGroup.Text>
                             <Form.Control
@@ -89,6 +90,7 @@ export default function Inventory({ isDarkMode })
                                 onChange={(e) => setQuantity(e.target.value)}
                                 onKeyDown={handleKeyPress}
                                 style={styles.quantityInput}
+                                aria-label="Specify Quantity"
                             />
                             <InputGroup.Text>Min:</InputGroup.Text>
                             <Form.Control
@@ -98,6 +100,7 @@ export default function Inventory({ isDarkMode })
                                 onChange={(e) => setMinDesiredStock(e.target.value)}
                                 onKeyDown={handleKeyPress}
                                 style={styles.quantityInput}
+                                aria-label="Specify Minimum Desired Stock"
                             />
                             <button
                                 type="button"
