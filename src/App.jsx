@@ -12,7 +12,29 @@ function App()
 {
 	const [sidebarVisible, setSidebarVisible] = useState(true)
 	const [isDarkMode, setIsDarkMode] = useState(true)
-	const [items, setItems] = useState([])
+	
+	// Load items from localStorage on initial mount
+	const loadItemsFromStorage = () => {
+		try {
+			const storedItems = localStorage.getItem('inventory')
+			return storedItems ? JSON.parse(storedItems) : []
+		} catch (error) {
+			console.error('Error loading items from localStorage:', error)
+			return []
+		}
+	}
+
+	const [items, setItems] = useState(loadItemsFromStorage)
+
+	// Wrapper function to update both state and localStorage
+	const updateItems = (newItems) => {
+		setItems(newItems)
+		try {
+			localStorage.setItem('inventory', JSON.stringify(newItems))
+		} catch (error) {
+			console.error('Error saving items to localStorage:', error)
+		}
+	}
 
 	const toggleSidebar = () => {
 		setSidebarVisible(!sidebarVisible)
@@ -24,50 +46,46 @@ function App()
 
 	const addItem = (itemName, quantity) => {
 		const quantityNum = parseInt(quantity) || 1
-		setItems(prevItems => {
-			const existingItemIndex = prevItems.findIndex(item => item.name === itemName)
-			
-			if (existingItemIndex !== -1) {
-				// Item exists, update its quantity
-				const updatedItems = [...prevItems]
-				updatedItems[existingItemIndex] = {
-					...updatedItems[existingItemIndex],
-					quantity: updatedItems[existingItemIndex].quantity + quantityNum
-				}
-				return updatedItems
-			} else {
-				// Item doesn't exist, add new item
-				return [...prevItems, { name: itemName, quantity: quantityNum }]
+		const existingItemIndex = items.findIndex(item => item.name === itemName)
+		
+		let updatedItems
+		if (existingItemIndex !== -1) {
+			// Item exists, update its quantity
+			updatedItems = [...items]
+			updatedItems[existingItemIndex] = {
+				...updatedItems[existingItemIndex],
+				quantity: updatedItems[existingItemIndex].quantity + quantityNum
 			}
-		})
+		} else {
+			// Item doesn't exist, add new item
+			updatedItems = [...items, { name: itemName, quantity: quantityNum }]
+		}
+		updateItems(updatedItems)
 	}
 
 	const deleteItem = (itemName) => {
-		setItems(prevItems => prevItems.filter(item => item.name !== itemName))
+		const updatedItems = items.filter(item => item.name !== itemName)
+		updateItems(updatedItems)
 	}
 
 	const incrementQuantity = (itemName) => {
-		setItems(prevItems => {
-			const updatedItems = prevItems.map(item => {
-				if (item.name === itemName) {
-					return { ...item, quantity: item.quantity + 1 }
-				}
-				return item
-			})
-			return updatedItems
+		const updatedItems = items.map(item => {
+			if (item.name === itemName) {
+				return { ...item, quantity: item.quantity + 1 }
+			}
+			return item
 		})
+		updateItems(updatedItems)
 	}
 
 	const decrementQuantity = (itemName) => {
-		setItems(prevItems => {
-			const updatedItems = prevItems.map(item => {
-				if (item.name === itemName && item.quantity > 0) {
-					return { ...item, quantity: item.quantity - 1 }
-				}
-				return item
-			})
-			return updatedItems
+		const updatedItems = items.map(item => {
+			if (item.name === itemName && item.quantity > 0) {
+				return { ...item, quantity: item.quantity - 1 }
+			}
+			return item
 		})
+		updateItems(updatedItems)
 	}
 
 	useEffect(() => {

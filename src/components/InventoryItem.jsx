@@ -12,7 +12,6 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
                 alignItems: 'center'
             }}
         >
-            <span>{item.name} (Quantity: {item.quantity})</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                 <button
                     onClick={onIncrement}
@@ -29,6 +28,7 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
                 >
                     +
                 </button>
+                <span style={{ margin: '0 5px' }}>{item.quantity}</span>
                 <button
                     onClick={onDecrement}
                     style={{
@@ -44,22 +44,31 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
                 >
                     −
                 </button>
-                <button
-                    onClick={onDelete}
+                <div 
                     style={{
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        color: isDarkMode ? 'rgba(255, 255, 255, 0.87)' : '#213547',
-                        cursor: 'pointer',
-                        fontSize: '1.2rem',
-                        padding: '0 5px',
-                        lineHeight: '1'
+                        width: '1px',
+                        height: '20px',
+                        backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
+                        margin: '0 10px'
                     }}
-                    aria-label="Delete item"
-                >
-                    🗑️
-                </button>
+                />
+                <span>{item.name}</span>
             </div>
+            <button
+                onClick={onDelete}
+                style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    color: isDarkMode ? 'rgba(255, 255, 255, 0.87)' : '#213547',
+                    cursor: 'pointer',
+                    fontSize: '1.2rem',
+                    padding: '0 5px',
+                    lineHeight: '1'
+                }}
+                aria-label="Delete item"
+            >
+                🗑️
+            </button>
         </ListGroup.Item>
     )
 }
