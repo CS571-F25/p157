@@ -165,6 +165,13 @@ export const getPageStyles = (isDarkMode) => {
     },
     quantityInput: {
       width: '80px'
+    },
+    relevancyLabel: {
+      color: colors.text,
+      fontSize: '0.875rem',
+      opacity: 0.7,
+      marginTop: '-0.5rem',
+      marginBottom: '1rem'
     }
   }
 }

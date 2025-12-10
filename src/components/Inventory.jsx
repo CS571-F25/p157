@@ -1,5 +1,6 @@
-import { useState, useRef, useContext } from 'react'
+import { useState, useRef, useContext, useMemo } from 'react'
 import { Container, Row, Col, Form, ListGroup, InputGroup } from 'react-bootstrap'
+import Fuse from 'fuse.js'
 import InventoryItem from './InventoryItem'
 import { InventoryContext } from '../contexts/InventoryContext'
 import { getPageStyles } from '../Styles'
@@ -12,6 +13,22 @@ export default function Inventory({ isDarkMode })
     const nameInputRef = useRef(null)
 
     const styles = getPageStyles(isDarkMode)
+
+    // Use Fuse.js for fuzzy search
+    const sortedItems = useMemo(() => {
+        if (!inputValue.trim()) {
+            return items
+        }
+
+        const fuse = new Fuse(items, {
+            keys: ['name'],
+            threshold: 0.4, // 0.0 = perfect match, 1.0 = match anything
+            includeScore: true
+        })
+
+        const results = fuse.search(inputValue.trim())
+        return results.map(result => result.item)
+    }, [items, inputValue])
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' && inputValue.trim() !== '') {
@@ -37,7 +54,7 @@ export default function Inventory({ isDarkMode })
                             <Form.Control
                                 ref={nameInputRef}
                                 type="text"
-                                placeholder="Type an item name"
+                                placeholder="Search or add an item name"
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
                                 onKeyDown={handleKeyPress}
@@ -53,9 +70,12 @@ export default function Inventory({ isDarkMode })
                             />
                         </InputGroup>
                     </Form.Group>
-                    {items.length > 0 && (
+                    {inputValue.trim() !== '' && (
+                        <p style={styles.relevancyLabel}>Showing items by relevancy</p>
+                    )}
+                    {sortedItems.length > 0 && (
                         <ListGroup>
-                            {items.map((item, index) => (
+                            {sortedItems.map((item, index) => (
                                 <InventoryItem 
                                     key={index} 
                                     item={item} 

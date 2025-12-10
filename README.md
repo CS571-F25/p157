@@ -26,6 +26,8 @@ model AND/OR barcode scanner)
 - `npm run dev` to see in browser with live reload
 - `npm run build` before each push to ensure the website is properly shown on GitHub
 
+Consider using https://www.fusejs.io/ for fuzzy search in the search bar
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
