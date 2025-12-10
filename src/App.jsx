@@ -7,6 +7,7 @@ import Home from './components/Home'
 import ShoppingList from './components/ShoppingList'
 import NavigationBar from './components/Navbar'
 import { InventoryContext } from './contexts/InventoryContext'
+import { getAppStyles } from './Styles'
 
 function App()
 {
@@ -98,41 +99,24 @@ function App()
 		}
 	}, [isDarkMode])
 
+	const styles = getAppStyles(isDarkMode, sidebarVisible)
+
 	return <HashRouter>
 		<InventoryContext.Provider value={{ items, addItem, deleteItem, incrementQuantity, decrementQuantity }}>
 			<button
 				onClick={toggleSidebar}
-				style={{
-					position: 'fixed',
-					top: '10px',
-					left: '10px',
-					zIndex: 1001,
-					backgroundColor: isDarkMode ? '#212529' : '#f8f9fa',
-					border: 'none',
-					color: isDarkMode ? 'white' : '#212529',
-					padding: '10px',
-					cursor: 'pointer',
-					borderRadius: '4px',
-					fontSize: '1.5rem'
-				}}
+				style={styles.hamburgerButton}
 				aria-label="Toggle sidebar"
 			>
 				☰
 			</button>
-			<div style={{ display: 'flex', minHeight: '100vh', width: '100%', overflow: 'hidden' }}>
-				<div style={{ width: sidebarVisible ? '15%' : '0%', transition: 'width 0.3s ease-in-out', overflow: 'hidden', flexShrink: 0 }}>
+			<div style={styles.appContainer}>
+				<div style={styles.sidebarWrapper}>
 					<NavigationBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
 				</div>
 				<Container 
 					fluid 
-					style={{ 
-						flex: 1,
-						padding: '20px',
-						width: '100%',
-						backgroundColor: isDarkMode ? '#242424' : '#ffffff',
-						color: isDarkMode ? 'rgba(255, 255, 255, 0.87)' : '#213547',
-						minHeight: '100vh'
-					}}
+					style={styles.mainContainer}
 				>
 					<Routes>
 						<Route path="/" element={<Home isDarkMode={isDarkMode}></Home>}></Route>

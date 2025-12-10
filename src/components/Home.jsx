@@ -2,6 +2,7 @@ import { useState, useRef, useContext } from 'react'
 import { Container, Row, Col, Form, ListGroup, InputGroup } from 'react-bootstrap'
 import InventoryItem from './InventoryItem'
 import { InventoryContext } from '../contexts/InventoryContext'
+import { getPageStyles } from '../Styles'
 
 export default function Home({ isDarkMode })
 {
@@ -9,6 +10,8 @@ export default function Home({ isDarkMode })
     const [inputValue, setInputValue] = useState('')
     const [quantity, setQuantity] = useState(1)
     const nameInputRef = useRef(null)
+
+    const styles = getPageStyles(isDarkMode)
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' && inputValue.trim() !== '') {
@@ -25,10 +28,10 @@ export default function Home({ isDarkMode })
     }
 
     return (
-        <Container className="mt-5" style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.87)' : '#213547' }}>
+        <Container className="mt-5" style={styles.container}>
             <Row className="justify-content-center">
                 <Col md={6}>
-                    <h1 className="mb-4" style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.87)' : '#213547' }}>Inventory</h1>
+                    <h1 className="mb-4" style={styles.heading}>Inventory</h1>
                     <Form.Group className="mb-3">
                         <InputGroup>
                             <Form.Control
@@ -46,7 +49,7 @@ export default function Home({ isDarkMode })
                                 value={quantity}
                                 onChange={(e) => setQuantity(e.target.value)}
                                 onKeyDown={handleKeyPress}
-                                style={{ width: '80px' }}
+                                style={styles.quantityInput}
                             />
                         </InputGroup>
                     </Form.Group>
