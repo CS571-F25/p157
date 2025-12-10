@@ -15,6 +15,7 @@ export default function Inventory({ isDarkMode })
     const [isAddButtonHovered, setIsAddButtonHovered] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
+    const [focusedInput, setFocusedInput] = useState(null)
     const nameInputRef = useRef(null)
 
     const styles = getPageStyles(isDarkMode)
@@ -80,6 +81,15 @@ export default function Inventory({ isDarkMode })
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
                                 onKeyDown={handleKeyPress}
+                                onFocus={() => setFocusedInput('name')}
+                                onBlur={() => setFocusedInput(null)}
+                                style={{
+                                    ...styles.nameInput,
+                                    width: focusedInput === 'quantity' || focusedInput === 'minDesiredStock' 
+                                        ? 'calc(50% - 70px)' 
+                                        : '50%',
+                                    transition: 'width 0.2s ease'
+                                }}
                                 aria-label="Search / Add item"
                             />
                             <InputGroup.Text>Qty:</InputGroup.Text>
@@ -89,7 +99,9 @@ export default function Inventory({ isDarkMode })
                                 value={quantity}
                                 onChange={(e) => setQuantity(e.target.value)}
                                 onKeyDown={handleKeyPress}
-                                style={styles.quantityInput}
+                                onFocus={() => setFocusedInput('quantity')}
+                                onBlur={() => setFocusedInput(null)}
+                                style={focusedInput === 'quantity' ? styles.quantityInputFocused : styles.quantityInput}
                                 aria-label="Specify Quantity"
                             />
                             <InputGroup.Text>Min:</InputGroup.Text>
@@ -99,7 +111,9 @@ export default function Inventory({ isDarkMode })
                                 value={minDesiredStock}
                                 onChange={(e) => setMinDesiredStock(e.target.value)}
                                 onKeyDown={handleKeyPress}
-                                style={styles.quantityInput}
+                                onFocus={() => setFocusedInput('minDesiredStock')}
+                                onBlur={() => setFocusedInput(null)}
+                                style={focusedInput === 'minDesiredStock' ? styles.quantityInputFocused : styles.quantityInput}
                                 aria-label="Specify Minimum Desired Stock"
                             />
                             <button

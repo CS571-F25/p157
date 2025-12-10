@@ -171,8 +171,16 @@ export const getPageStyles = (isDarkMode) => {
     heading: {
       color: colors.text
     },
+    nameInput: {
+      // Width is set dynamically in component
+    },
     quantityInput: {
-      width: '80px'
+      width: '80px',
+      transition: 'width 0.2s ease'
+    },
+    quantityInputFocused: {
+      width: '150px',
+      transition: 'width 0.2s ease'
     },
     relevancyLabel: {
       color: colors.text,
