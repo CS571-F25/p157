@@ -135,23 +135,35 @@ export const getInventoryItemStyles = (isDarkMode) => {
     },
     controlsContainer: {
       display: 'flex',
-      alignItems: 'center',
-      gap: '5px'
+      alignItems: 'stretch',
+      gap: '5px',
+      height: '100%'
     },
     quantityControls: {
       display: 'flex',
-      alignItems: 'center',
+      alignItems: 'stretch',
       width: '80px',
       position: 'relative',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      height: '100%'
     },
     incrementButton: {
       position: 'absolute',
-      left: '0'
+      left: '0',
+      height: '100%',
+      width: '40%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     decrementButton: {
       position: 'absolute',
-      right: '0'
+      right: '0',
+      height: '100%',
+      width: '40%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     button: {
       backgroundColor: 'transparent',
