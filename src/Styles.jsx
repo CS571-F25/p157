@@ -234,7 +234,7 @@ export const getInventoryItemCardStyles = (isDarkMode) => {
       flexDirection: 'column',
       justifyContent: 'space-between',
       flex: 1,
-      padding: '1.25rem'
+      padding: '0.5rem'
     },
     cardTitle: {
       color: colors.text,
@@ -253,7 +253,7 @@ export const getInventoryItemCardStyles = (isDarkMode) => {
       marginTop: 'auto',
       width: '100%',
       borderTop: `1px solid ${colors.itemBorder}`,
-      paddingTop: '10px'
+      paddingTop: '5px'
     },
     footerButton: {
       flex: '0 0 25%',

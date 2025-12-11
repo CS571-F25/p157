@@ -73,7 +73,7 @@ export default function InventoryItemCard({ item, isDarkMode, onDelete, onIncrem
                             🗑️
                         </Button>
                     </div>
-                    <div style={{ ...styles.tagContainer, marginTop: '10px', justifyContent: 'center', minHeight: '24px' }}>
+                    <div style={{ ...styles.tagContainer, marginTop: '4px', justifyContent: 'center', minHeight: '24px' }}>
                         {item.tags && item.tags.length > 0 && (
                             item.tags.map((tag, index) => {
                                 const tagColor = getTagColor(tag)
