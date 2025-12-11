@@ -179,6 +179,77 @@ export const getInventoryItemStyles = (isDarkMode) => {
   }
 }
 
+// InventoryItemCard.jsx styles
+export const getInventoryItemCardStyles = (isDarkMode) => {
+  const colors = isDarkMode ? themeColors.dark : themeColors.light
+  return {
+    card: {
+      backgroundColor: colors.itemBg,
+      color: colors.text,
+      borderColor: colors.itemBorder,
+      marginBottom: '15px',
+      height: '100%'
+    },
+    cardHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '15px'
+    },
+    cardTitle: {
+      color: colors.text,
+      fontSize: '1.25rem',
+      margin: 0,
+      flex: 1
+    },
+    quantitySection: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '10px'
+    },
+    quantityControls: {
+      display: 'flex',
+      alignItems: 'center',
+      width: '80px',
+      position: 'relative',
+      justifyContent: 'center'
+    },
+    incrementButton: {
+      position: 'absolute',
+      left: '0'
+    },
+    decrementButton: {
+      position: 'absolute',
+      right: '0'
+    },
+    button: {
+      backgroundColor: 'transparent',
+      border: 'none',
+      color: colors.text,
+      cursor: 'pointer',
+      fontSize: '1.2rem',
+      padding: '0 5px',
+      lineHeight: '1',
+      textDecoration: 'none'
+    },
+    quantity: {
+      margin: '0 5px',
+      fontSize: '1.5rem',
+      fontWeight: 'bold'
+    },
+    minStockLabel: {
+      fontSize: '0.875rem',
+      opacity: 0.7,
+      color: colors.text
+    },
+    lowStockName: {
+      color: isDarkMode ? '#ffb3ba' : '#c62828',
+      fontWeight: 'bold'
+    }
+  }
+}
+
 // Inventory.jsx and ShoppingList.jsx shared styles
 export const getPageStyles = (isDarkMode) => {
   const colors = isDarkMode ? themeColors.dark : themeColors.light

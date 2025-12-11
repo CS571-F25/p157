@@ -1,7 +1,8 @@
 import { useState, useRef, useContext, useMemo } from 'react'
-import { Button, Container, Row, Col, Form, ListGroup, InputGroup } from 'react-bootstrap'
+import { Button, Container, Row, Col, Form, ListGroup, InputGroup, ButtonGroup, ToggleButton } from 'react-bootstrap'
 import Fuse from 'fuse.js'
 import InventoryItem from './InventoryItem'
+import InventoryItemCard from './InventoryItemCard'
 import InventoryItemModal from './InventoryItemModal'
 import { InventoryContext } from '../contexts/InventoryContext'
 import { getPageStyles } from '../Styles'
@@ -16,6 +17,7 @@ export default function Inventory({ isDarkMode })
     const [showModal, setShowModal] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
     const [focusedInput, setFocusedInput] = useState(null)
+    const [viewMode, setViewMode] = useState('list') // 'list' or 'grid'
     const nameInputRef = useRef(null)
 
     const styles = getPageStyles(isDarkMode)
@@ -68,10 +70,36 @@ export default function Inventory({ isDarkMode })
     }
 
     return (
-        <Container className="mt-5" style={styles.container}>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <h1 className="mb-4" style={styles.heading}>Inventory</h1>
+        <Container className="mt-5" style={styles.container} fluid={viewMode === 'grid'}>
+            <Row className={viewMode === 'list' ? 'justify-content-center' : ''}>
+                <Col md={viewMode === 'list' ? 6 : 12}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                        <h1 className="mb-0" style={styles.heading}>Inventory</h1>
+                        <ButtonGroup>
+                            <ToggleButton
+                                id="toggle-list"
+                                type="radio"
+                                variant="outline-secondary"
+                                name="view-mode"
+                                value="list"
+                                checked={viewMode === 'list'}
+                                onChange={(e) => setViewMode(e.currentTarget.value)}
+                            >
+                                List
+                            </ToggleButton>
+                            <ToggleButton
+                                id="toggle-grid"
+                                type="radio"
+                                variant="outline-secondary"
+                                name="view-mode"
+                                value="grid"
+                                checked={viewMode === 'grid'}
+                                onChange={(e) => setViewMode(e.currentTarget.value)}
+                            >
+                                Grid
+                            </ToggleButton>
+                        </ButtonGroup>
+                    </div>
                     <Form.Group className="mb-3">
                         <InputGroup>
                             <Form.Control
@@ -143,19 +171,36 @@ export default function Inventory({ isDarkMode })
                         <p style={styles.relevancyLabel}>Showing items by relevancy</p>
                     )}
                     {sortedItems.length > 0 && (
-                        <ListGroup>
-                            {sortedItems.map((item, index) => (
-                                <InventoryItem 
-                                    key={index} 
-                                    item={item} 
-                                    isDarkMode={isDarkMode}
-                                    onDelete={() => handleDelete(item.name)}
-                                    onIncrement={() => incrementQuantity(item.name)}
-                                    onDecrement={() => decrementQuantity(item.name)}
-                                    onClick={() => handleItemClick(item)}
-                                />
-                            ))}
-                        </ListGroup>
+                        viewMode === 'list' ? (
+                            <ListGroup>
+                                {sortedItems.map((item, index) => (
+                                    <InventoryItem 
+                                        key={index} 
+                                        item={item} 
+                                        isDarkMode={isDarkMode}
+                                        onDelete={() => handleDelete(item.name)}
+                                        onIncrement={() => incrementQuantity(item.name)}
+                                        onDecrement={() => decrementQuantity(item.name)}
+                                        onClick={() => handleItemClick(item)}
+                                    />
+                                ))}
+                            </ListGroup>
+                        ) : (
+                            <Row>
+                                {sortedItems.map((item, index) => (
+                                    <Col key={index} xs={12} sm={6} md={4} lg={3} xl={2} className="mb-3">
+                                        <InventoryItemCard
+                                            item={item}
+                                            isDarkMode={isDarkMode}
+                                            onDelete={() => handleDelete(item.name)}
+                                            onIncrement={() => incrementQuantity(item.name)}
+                                            onDecrement={() => decrementQuantity(item.name)}
+                                            onClick={() => handleItemClick(item)}
+                                        />
+                                    </Col>
+                                ))}
+                            </Row>
+                        )
                     )}
                 </Col>
             </Row>
