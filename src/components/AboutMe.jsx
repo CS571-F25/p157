@@ -7,6 +7,6 @@ export default function AboutMe({ isDarkMode })
     return <div style={styles.container}>
         <img src={"https://pbs.twimg.com/profile_images/1852330841319280640/6D8HxYmd_400x400.jpg"} alt="Smiling doge" />
         <p>Martin Diges, the author of this page, is quite forgetful and likes to know where their things are.</p>
-        <p>This website was produed in large part through interaction with Cursor. Uses React Router for navigation and React Bootstrap for styling.</p>
+        <p>This website was produed in large part through interaction with Cursor. Uses React Router for navigation and React Bootstrap for styling. This project uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search in the search bar.</p>
     </div> 
 }
