@@ -193,7 +193,6 @@ export const getInventoryItemStyles = (isDarkMode) => {
       borderRadius: '12px',
       fontSize: '0.75rem',
       fontWeight: '500',
-      color: '#fff',
       whiteSpace: 'nowrap'
     },
     quantity: {
@@ -293,7 +292,6 @@ export const getInventoryItemCardStyles = (isDarkMode) => {
       borderRadius: '12px',
       fontSize: '0.75rem',
       fontWeight: '500',
-      color: '#fff',
       whiteSpace: 'nowrap'
     },
     fading: {
@@ -450,7 +448,6 @@ export const getShoppingListItemStyles = (isDarkMode) => {
       borderRadius: '12px',
       fontSize: '0.75rem',
       fontWeight: '500',
-      color: '#fff',
       whiteSpace: 'nowrap'
     },
     fading: {

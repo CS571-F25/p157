@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ListGroup, Button } from 'react-bootstrap'
 import { getInventoryItemStyles } from '../Styles'
-import { getTagColor } from '../utils/tags'
+import { getTagColor, getTagTextColor } from '../utils/tags'
 
 export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement, onDecrement, onClick }) {
     const [isFading, setIsFading] = useState(false)
@@ -65,17 +65,21 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 {item.tags && item.tags.length > 0 && (
                     <div style={styles.tagContainer}>
-                        {item.tags.map((tag, index) => (
-                            <span
-                                key={index}
-                                style={{
-                                    ...styles.tagLabel,
-                                    backgroundColor: getTagColor(tag)
-                                }}
-                            >
-                                {tag}
-                            </span>
-                        ))}
+                        {item.tags.map((tag, index) => {
+                            const tagColor = getTagColor(tag)
+                            return (
+                                <span
+                                    key={index}
+                                    style={{
+                                        ...styles.tagLabel,
+                                        backgroundColor: tagColor,
+                                        color: getTagTextColor(tagColor)
+                                    }}
+                                >
+                                    {tag}
+                                </span>
+                            )
+                        })}
                     </div>
                 )}
                 <Button

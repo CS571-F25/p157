@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ListGroup } from 'react-bootstrap'
 import { getShoppingListItemStyles } from '../Styles'
-import { getTagColor } from '../utils/tags'
+import { getTagColor, getTagTextColor } from '../utils/tags'
 
 export default function ShoppingListItem({ item, isDarkMode, onCheck }) {
     const [isChecked, setIsChecked] = useState(false)
@@ -36,17 +36,21 @@ export default function ShoppingListItem({ item, isDarkMode, onCheck }) {
                 <span style={styles.itemName}>{item.name}</span>
                 {item.tags && item.tags.length > 0 && (
                     <div style={styles.tagContainer}>
-                        {item.tags.map((tag, index) => (
-                            <span
-                                key={index}
-                                style={{
-                                    ...styles.tagLabel,
-                                    backgroundColor: getTagColor(tag)
-                                }}
-                            >
-                                {tag}
-                            </span>
-                        ))}
+                        {item.tags.map((tag, index) => {
+                            const tagColor = getTagColor(tag)
+                            return (
+                                <span
+                                    key={index}
+                                    style={{
+                                        ...styles.tagLabel,
+                                        backgroundColor: tagColor,
+                                        color: getTagTextColor(tagColor)
+                                    }}
+                                >
+                                    {tag}
+                                </span>
+                            )
+                        })}
                     </div>
                 )}
             </div>

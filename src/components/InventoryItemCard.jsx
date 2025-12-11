@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { getInventoryItemCardStyles } from '../Styles'
-import { getTagColor } from '../utils/tags'
+import { getTagColor, getTagTextColor } from '../utils/tags'
 
 export default function InventoryItemCard({ item, isDarkMode, onDelete, onIncrement, onDecrement, onClick }) {
     const [isFading, setIsFading] = useState(false)
@@ -66,17 +66,21 @@ export default function InventoryItemCard({ item, isDarkMode, onDelete, onIncrem
                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                         {item.tags && item.tags.length > 0 && (
                             <div style={styles.tagContainer}>
-                                {item.tags.map((tag, index) => (
-                                    <span
-                                        key={index}
-                                        style={{
-                                            ...styles.tagLabel,
-                                            backgroundColor: getTagColor(tag)
-                                        }}
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
+                                {item.tags.map((tag, index) => {
+                                    const tagColor = getTagColor(tag)
+                                    return (
+                                        <span
+                                            key={index}
+                                            style={{
+                                                ...styles.tagLabel,
+                                                backgroundColor: tagColor,
+                                                color: getTagTextColor(tagColor)
+                                            }}
+                                        >
+                                            {tag}
+                                        </span>
+                                    )
+                                })}
                             </div>
                         )}
                         <Button
