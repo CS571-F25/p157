@@ -5,6 +5,7 @@ import InventoryItem from './InventoryItem'
 import InventoryItemCard from './InventoryItemCard'
 import InventoryItemModal from './InventoryItemModal'
 import InventoryUndo from './InventoryUndo'
+import InventoryItemUndoAdd from './InventoryItemUndoAdd'
 import { InventoryContext } from '../contexts/InventoryContext'
 import { getPageStyles } from '../Styles'
 
@@ -20,6 +21,7 @@ export default function Inventory({ isDarkMode })
     const [focusedInput, setFocusedInput] = useState(null)
     const [viewMode, setViewMode] = useState('list') // 'list' or 'grid'
     const [undoInfo, setUndoInfo] = useState(null)
+    const [undoAddInfo, setUndoAddInfo] = useState(null)
     const nameInputRef = useRef(null)
 
     const styles = getPageStyles(isDarkMode)
@@ -54,6 +56,10 @@ export default function Inventory({ isDarkMode })
         if (inputValue.trim() !== '') {
             const itemName = inputValue.trim()
             addItem(itemName, quantity, minDesiredStock)
+            // Store undo info for the added item
+            setUndoAddInfo({
+                itemName: itemName
+            })
             setInputValue('')
             setQuantity(1)
             setMinDesiredStock(0)
@@ -88,6 +94,17 @@ export default function Inventory({ isDarkMode })
 
     const handleDismiss = () => {
         setUndoInfo(null)
+    }
+
+    const handleUndoAdd = () => {
+        if (undoAddInfo && undoAddInfo.itemName) {
+            deleteItem(undoAddInfo.itemName)
+            setUndoAddInfo(null)
+        }
+    }
+
+    const handleDismissAdd = () => {
+        setUndoAddInfo(null)
     }
 
     return (
@@ -254,6 +271,31 @@ export default function Inventory({ isDarkMode })
                                     isDarkMode={isDarkMode}
                                     onUndo={handleUndo}
                                     onDismiss={handleDismiss}
+                                />
+                            </Col>
+                        </Row>
+                    )
+                )}
+                {undoAddInfo && (
+                    viewMode === 'list' ? (
+                        <Row className="justify-content-center">
+                            <Col md={6}>
+                                <InventoryItemUndoAdd
+                                    itemName={undoAddInfo.itemName}
+                                    isDarkMode={isDarkMode}
+                                    onUndo={handleUndoAdd}
+                                    onDismiss={handleDismissAdd}
+                                />
+                            </Col>
+                        </Row>
+                    ) : (
+                        <Row>
+                            <Col>
+                                <InventoryItemUndoAdd
+                                    itemName={undoAddInfo.itemName}
+                                    isDarkMode={isDarkMode}
+                                    onUndo={handleUndoAdd}
+                                    onDismiss={handleDismissAdd}
                                 />
                             </Col>
                         </Row>

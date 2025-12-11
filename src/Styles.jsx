@@ -438,6 +438,25 @@ export const getInventoryUndoStyles = (isDarkMode) => {
   }
 }
 
+// InventoryItemUndoAdd.jsx styles
+export const getInventoryItemUndoAddStyles = (isDarkMode) => {
+  const colors = isDarkMode ? themeColors.dark : themeColors.light
+  return {
+    alert: {
+      backgroundColor: isDarkMode ? '#1e4620' : '#d1e7dd',
+      borderColor: isDarkMode ? '#2d5a32' : '#badbcc',
+      color: colors.text,
+      marginTop: '15px'
+    },
+    undoButton: {
+      textDecoration: 'none'
+    },
+    dismissButton: {
+      textDecoration: 'none'
+    }
+  }
+}
+
 // AboutMe.jsx styles
 export const getAboutMeStyles = (isDarkMode) => {
   const colors = isDarkMode ? themeColors.dark : themeColors.light
