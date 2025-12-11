@@ -8,7 +8,7 @@ import InventoryUndo from './InventoryUndo'
 import InventoryItemUndoAdd from './InventoryItemUndoAdd'
 import { InventoryContext } from '../contexts/InventoryContext'
 import { getPageStyles } from '../Styles'
-import { getAllTags, getTagColor } from '../utils/tags'
+import { getAllTags, getTagColor, getTagTextColor } from '../utils/tags'
 
 export default function Inventory({ isDarkMode })
 {
@@ -25,6 +25,7 @@ export default function Inventory({ isDarkMode })
     const [sortOption, setSortOption] = useState('name') // 'name' or 'stock'
     const [undoInfo, setUndoInfo] = useState(null)
     const [undoAddInfo, setUndoAddInfo] = useState(null)
+    const [tagDropdownOpen, setTagDropdownOpen] = useState(false)
     const nameInputRef = useRef(null)
     const tagSelectRef = useRef(null)
 
@@ -124,10 +125,11 @@ export default function Inventory({ isDarkMode })
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            // If tag select is focused, prevent adding item (native select will expand on Enter)
+            // If tag dropdown is focused, expand it
             if (focusedInput === 'tag') {
                 e.preventDefault()
                 e.stopPropagation()
+                setTagDropdownOpen(true)
                 return
             } else if (inputValue.trim() !== '') {
                 handleAddItem()
@@ -272,37 +274,64 @@ export default function Inventory({ isDarkMode })
                                 aria-label="Specify Minimum Desired Stock"
                             />
                             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                <Form.Select
-                                    ref={tagSelectRef}
-                                    value={selectedTag}
-                                    onChange={(e) => setSelectedTag(e.target.value)}
-                                    onKeyDown={handleKeyPress}
-                                    onFocus={() => setFocusedInput('tag')}
-                                    onBlur={() => setFocusedInput(null)}
-                                    style={styles.tagSelect}
-                                    aria-label="Select tag"
+                                <Dropdown
+                                    show={tagDropdownOpen}
+                                    onToggle={(isOpen) => {
+                                        setTagDropdownOpen(isOpen)
+                                        if (!isOpen) {
+                                            setFocusedInput(null)
+                                        }
+                                    }}
                                 >
-                                    <option value="">No tag</option>
-                                    {allTags.map(tag => (
-                                        <option key={tag} value={tag}>
-                                            {tag}
-                                        </option>
-                                    ))}
-                                </Form.Select>
-                                {selectedTag && (
-                                    <span
+                                    <Dropdown.Toggle
+                                        ref={tagSelectRef}
+                                        variant="outline-secondary"
+                                        onKeyDown={handleKeyPress}
+                                        onFocus={() => setFocusedInput('tag')}
+                                        onBlur={() => setFocusedInput(null)}
                                         style={{
-                                            width: '20px',
-                                            height: '20px',
-                                            borderRadius: '50%',
-                                            backgroundColor: getTagColor(selectedTag),
-                                            border: '2px solid var(--bs-border-color)',
-                                            flexShrink: 0
+                                            ...styles.tagSelect,
+                                            backgroundColor: '#fff',
+                                            color: '#212529',
+                                            border: '1px solid #ced4da',
+                                            borderRadius: 0
                                         }}
-                                        title={selectedTag}
-                                        aria-label={`Selected tag: ${selectedTag}`}
-                                    />
-                                )}
+                                        aria-label="Select tag"
+                                    >
+                                        {selectedTag || 'No tag'}
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item
+                                            active={!selectedTag}
+                                            onClick={() => {
+                                                setSelectedTag('')
+                                                setTagDropdownOpen(false)
+                                            }}
+                                        >
+                                            No tag
+                                        </Dropdown.Item>
+                                        {allTags.map(tag => {
+                                            const tagColor = getTagColor(tag)
+                                            const textColor = getTagTextColor(tagColor)
+                                            return (
+                                                <Dropdown.Item
+                                                    key={tag}
+                                                    active={selectedTag === tag}
+                                                    onClick={() => {
+                                                        setSelectedTag(tag)
+                                                        setTagDropdownOpen(false)
+                                                    }}
+                                                    style={{
+                                                        backgroundColor: tagColor,
+                                                        color: textColor
+                                                    }}
+                                                >
+                                                    {tag}
+                                                </Dropdown.Item>
+                                            )
+                                        })}
+                                    </Dropdown.Menu>
+                                </Dropdown>
                             </div>
                             <Button
                                 onClick={handleAddItem}

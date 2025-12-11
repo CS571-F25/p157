@@ -339,7 +339,15 @@ export const getPageStyles = (isDarkMode) => {
     },
     tagSelect: {
       width: '90px',
-      flexShrink: 0
+      flexShrink: 0,
+      height: '38px', // Match Form.Control height
+      padding: '0.375rem 0.75rem',
+      fontSize: '1rem',
+      lineHeight: '1.5',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      color: '#212529'
     },
     relevancyLabel: {
       color: colors.text,
