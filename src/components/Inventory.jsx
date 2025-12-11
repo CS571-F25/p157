@@ -1,5 +1,5 @@
 import { useState, useRef, useContext, useMemo } from 'react'
-import { Button, Container, Row, Col, Form, ListGroup, InputGroup, ButtonGroup, ToggleButton } from 'react-bootstrap'
+import { Button, Container, Row, Col, Form, ListGroup, InputGroup, ButtonGroup, ToggleButton, DropdownButton, Dropdown } from 'react-bootstrap'
 import Fuse from 'fuse.js'
 import InventoryItem from './InventoryItem'
 import InventoryItemCard from './InventoryItemCard'
@@ -20,6 +20,7 @@ export default function Inventory({ isDarkMode })
     const [selectedItem, setSelectedItem] = useState(null)
     const [focusedInput, setFocusedInput] = useState(null)
     const [viewMode, setViewMode] = useState('list') // 'list' or 'grid'
+    const [sortOption, setSortOption] = useState('name') // 'name' or 'stock'
     const [undoInfo, setUndoInfo] = useState(null)
     const [undoAddInfo, setUndoAddInfo] = useState(null)
     const nameInputRef = useRef(null)
@@ -36,21 +37,34 @@ export default function Inventory({ isDarkMode })
         setSelectedItem(null)
     }
 
-    // Use Fuse.js for fuzzy search
+    // Use Fuse.js for fuzzy search and apply sorting
     const sortedItems = useMemo(() => {
-        if (!inputValue.trim()) {
-            return items
+        let filteredItems = items
+        
+        // Apply search filter if there's a search query
+        if (inputValue.trim()) {
+            const fuse = new Fuse(items, {
+                keys: ['name'],
+                threshold: 0.4, // 0.0 = perfect match, 1.0 = match anything
+                includeScore: true
+            })
+
+            const results = fuse.search(inputValue.trim())
+            filteredItems = results.map(result => result.item)
         }
 
-        const fuse = new Fuse(items, {
-            keys: ['name'],
-            threshold: 0.4, // 0.0 = perfect match, 1.0 = match anything
-            includeScore: true
+        // Apply sorting
+        const sorted = [...filteredItems].sort((a, b) => {
+            if (sortOption === 'name') {
+                return a.name.localeCompare(b.name)
+            } else if (sortOption === 'stock') {
+                return a.quantity - b.quantity
+            }
+            return 0
         })
 
-        const results = fuse.search(inputValue.trim())
-        return results.map(result => result.item)
-    }, [items, inputValue])
+        return sorted
+    }, [items, inputValue, sortOption])
 
     const handleAddItem = () => {
         if (inputValue.trim() !== '') {
@@ -115,30 +129,51 @@ export default function Inventory({ isDarkMode })
                     <Col md={6}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                         <h1 className="mb-0" style={styles.heading}>Inventory</h1>
-                        <ButtonGroup>
-                            <ToggleButton
-                                id="toggle-list"
-                                type="radio"
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                            <DropdownButton
+                                id="sort-dropdown"
+                                title={`Sort: ${sortOption === 'name' ? 'Name' : 'Stock'}`}
                                 variant="outline-secondary"
-                                name="view-mode"
-                                value="list"
-                                checked={viewMode === 'list'}
-                                onChange={(e) => setViewMode(e.currentTarget.value)}
+                                size="sm"
                             >
-                                List
-                            </ToggleButton>
-                            <ToggleButton
-                                id="toggle-grid"
-                                type="radio"
-                                variant="outline-secondary"
-                                name="view-mode"
-                                value="grid"
-                                checked={viewMode === 'grid'}
-                                onChange={(e) => setViewMode(e.currentTarget.value)}
-                            >
-                                Grid
-                            </ToggleButton>
-                        </ButtonGroup>
+                                <Dropdown.Item 
+                                    active={sortOption === 'name'}
+                                    onClick={() => setSortOption('name')}
+                                >
+                                    Name
+                                </Dropdown.Item>
+                                <Dropdown.Item 
+                                    active={sortOption === 'stock'}
+                                    onClick={() => setSortOption('stock')}
+                                >
+                                    Stock
+                                </Dropdown.Item>
+                            </DropdownButton>
+                            <ButtonGroup>
+                                <ToggleButton
+                                    id="toggle-list"
+                                    type="radio"
+                                    variant="outline-secondary"
+                                    name="view-mode"
+                                    value="list"
+                                    checked={viewMode === 'list'}
+                                    onChange={(e) => setViewMode(e.currentTarget.value)}
+                                >
+                                    List
+                                </ToggleButton>
+                                <ToggleButton
+                                    id="toggle-grid"
+                                    type="radio"
+                                    variant="outline-secondary"
+                                    name="view-mode"
+                                    value="grid"
+                                    checked={viewMode === 'grid'}
+                                    onChange={(e) => setViewMode(e.currentTarget.value)}
+                                >
+                                    Grid
+                                </ToggleButton>
+                            </ButtonGroup>
+                        </div>
                     </div>
                     <Form.Group className="mb-3">
                         <InputGroup>
