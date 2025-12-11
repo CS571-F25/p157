@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Container, Row, Col, Form, ListGroup, InputGroup, Button, Badge } from 'react-bootstrap'
 import { getPageStyles } from '../Styles'
-import { getAllTagColors, getTagColor, saveCustomTags, loadCustomTags, DEFAULT_TAGS, DEFAULT_TAG_COLORS } from '../utils/tags'
+import { getAllTagColors, getTagColor, getTagTextColor, saveCustomTags, loadCustomTags, DEFAULT_TAGS, DEFAULT_TAG_COLORS } from '../utils/tags'
 
 export default function Tags({ isDarkMode }) {
     const [tags, setTags] = useState({})
@@ -140,11 +140,13 @@ export default function Tags({ isDarkMode }) {
                                 >
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                         <Badge
+                                            bg=""
                                             style={{
                                                 backgroundColor: tag.color,
-                                                color: '#fff',
+                                                color: getTagTextColor(tag.color),
                                                 padding: '5px 10px',
-                                                fontSize: '0.875rem'
+                                                fontSize: '0.875rem',
+                                                border: 'none'
                                             }}
                                         >
                                             {tag.name}
