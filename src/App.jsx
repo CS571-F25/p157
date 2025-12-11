@@ -5,6 +5,7 @@ import './App.css'
 import AboutMe from './components/AboutMe'
 import Inventory from './components/Inventory'
 import ShoppingList from './components/ShoppingList'
+import Tags from './components/Tags'
 import NavigationBar from './components/Navbar'
 import { InventoryContext } from './contexts/InventoryContext'
 import { getAppStyles } from './Styles'
@@ -19,10 +20,11 @@ function App()
 		try {
 			const storedItems = localStorage.getItem('inventory')
 			const items = storedItems ? JSON.parse(storedItems) : []
-			// Ensure all items have minDesiredStock (default to 1 if missing)
+			// Ensure all items have minDesiredStock (default to 1 if missing) and tags (default to empty array)
 			return items.map(item => ({
 				...item,
-				minDesiredStock: item.minDesiredStock ?? 1
+				minDesiredStock: item.minDesiredStock ?? 1,
+				tags: item.tags || []
 			}))
 		} catch (error) {
 			console.error('Error loading items from localStorage:', error)
@@ -50,7 +52,7 @@ function App()
 		setIsDarkMode(!isDarkMode)
 	}
 
-	const addItem = (itemName, quantity, minDesiredStock = 1) => {
+	const addItem = (itemName, quantity, minDesiredStock = 1, tags = []) => {
 		const quantityNum = parseInt(quantity) || 1
 		const minDesiredStockNum = parseInt(minDesiredStock) || 1
 		const existingItemIndex = items.findIndex(item => item.name === itemName)
@@ -66,7 +68,7 @@ function App()
 			}
 		} else {
 			// Item doesn't exist, add new item
-			updatedItems = [...items, { name: itemName, quantity: quantityNum, minDesiredStock: minDesiredStockNum }]
+			updatedItems = [...items, { name: itemName, quantity: quantityNum, minDesiredStock: minDesiredStockNum, tags: tags || [] }]
 		}
 		updateItems(updatedItems)
 	}
@@ -111,7 +113,8 @@ function App()
 				return { 
 					name: newName, 
 					quantity: isNaN(parsedQuantity) ? 1 : parsedQuantity,
-					minDesiredStock: newMinDesiredStock !== null ? (parseInt(newMinDesiredStock) || 1) : (item.minDesiredStock ?? 1)
+					minDesiredStock: newMinDesiredStock !== null ? (parseInt(newMinDesiredStock) || 1) : (item.minDesiredStock ?? 1),
+					tags: item.tags || []
 				}
 			}
 			return item
@@ -173,6 +176,7 @@ function App()
 						<Route path="/" element={<Inventory isDarkMode={isDarkMode}></Inventory>}></Route>
 						<Route path="/about" element={<AboutMe isDarkMode={isDarkMode}></AboutMe>}></Route>
 						<Route path="/shopping-list" element={<ShoppingList isDarkMode={isDarkMode}></ShoppingList>}></Route>
+						<Route path="/tags" element={<Tags isDarkMode={isDarkMode}></Tags>}></Route>
 					</Routes>
 				</Container>
 			</div>

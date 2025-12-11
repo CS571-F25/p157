@@ -182,6 +182,20 @@ export const getInventoryItemStyles = (isDarkMode) => {
       justifyContent: 'center',
       alignSelf: 'stretch'
     },
+    tagContainer: {
+      display: 'flex',
+      gap: '5px',
+      alignItems: 'center',
+      marginRight: '10px'
+    },
+    tagLabel: {
+      padding: '2px 8px',
+      borderRadius: '12px',
+      fontSize: '0.75rem',
+      fontWeight: '500',
+      color: '#fff',
+      whiteSpace: 'nowrap'
+    },
     quantity: {
       margin: '0 5px'
     },
@@ -267,6 +281,21 @@ export const getInventoryItemCardStyles = (isDarkMode) => {
       color: isDarkMode ? '#ffb3ba' : '#c62828',
       fontWeight: 'bold'
     },
+    tagContainer: {
+      display: 'flex',
+      gap: '5px',
+      alignItems: 'center',
+      marginRight: '10px',
+      flexWrap: 'wrap'
+    },
+    tagLabel: {
+      padding: '2px 8px',
+      borderRadius: '12px',
+      fontSize: '0.75rem',
+      fontWeight: '500',
+      color: '#fff',
+      whiteSpace: 'nowrap'
+    },
     fading: {
       opacity: 0,
       transition: 'opacity 0.5s ease-out',
@@ -285,16 +314,34 @@ export const getPageStyles = (isDarkMode) => {
     heading: {
       color: colors.text
     },
+    listItem: {
+      backgroundColor: colors.itemBg,
+      color: colors.text,
+      borderColor: colors.itemBorder
+    },
+    button: {
+      backgroundColor: 'transparent',
+      border: 'none',
+      color: colors.text,
+      cursor: 'pointer',
+      fontSize: '1.2rem',
+      padding: '0 5px',
+      lineHeight: '1',
+      textDecoration: 'none'
+    },
     nameInput: {
       // Width is set dynamically in component
     },
     quantityInput: {
-      width: '80px',
-      transition: 'width 0.2s ease'
+      width: '50px',
+      minWidth: '50px',
+      maxWidth: '50px',
+      flexShrink: 0,
+      flexGrow: 0
     },
-    quantityInputFocused: {
-      width: '150px',
-      transition: 'width 0.2s ease'
+    tagSelect: {
+      width: '90px',
+      flexShrink: 0
     },
     relevancyLabel: {
       color: colors.text,
@@ -391,6 +438,20 @@ export const getShoppingListItemStyles = (isDarkMode) => {
     },
     itemName: {
       flex: 1
+    },
+    tagContainer: {
+      display: 'flex',
+      gap: '5px',
+      alignItems: 'center',
+      marginLeft: '10px'
+    },
+    tagLabel: {
+      padding: '2px 8px',
+      borderRadius: '12px',
+      fontSize: '0.75rem',
+      fontWeight: '500',
+      color: '#fff',
+      whiteSpace: 'nowrap'
     },
     fading: {
       opacity: 0,

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ListGroup, Button } from 'react-bootstrap'
 import { getInventoryItemStyles } from '../Styles'
+import { getTagColor } from '../utils/tags'
 
 export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement, onDecrement, onClick }) {
     const [isFading, setIsFading] = useState(false)
@@ -61,14 +62,31 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
                 <div style={styles.separator} />
                 <span style={isLowStock ? styles.lowStockName : {}}>{item.name}</span>
             </div>
-            <Button
-                onClick={handleDelete}
-                style={{ ...styles.button, ...styles.deleteButton, textDecoration: 'none' }}
-                aria-label="Delete item"
-                variant="link"
-            >
-                🗑️
-            </Button>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                {item.tags && item.tags.length > 0 && (
+                    <div style={styles.tagContainer}>
+                        {item.tags.map((tag, index) => (
+                            <span
+                                key={index}
+                                style={{
+                                    ...styles.tagLabel,
+                                    backgroundColor: getTagColor(tag)
+                                }}
+                            >
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                )}
+                <Button
+                    onClick={handleDelete}
+                    style={{ ...styles.button, ...styles.deleteButton, textDecoration: 'none' }}
+                    aria-label="Delete item"
+                    variant="link"
+                >
+                    🗑️
+                </Button>
+            </div>
         </ListGroup.Item>
     )
 }

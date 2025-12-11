@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { getInventoryItemCardStyles } from '../Styles'
+import { getTagColor } from '../utils/tags'
 
 export default function InventoryItemCard({ item, isDarkMode, onDelete, onIncrement, onDecrement, onClick }) {
     const [isFading, setIsFading] = useState(false)
@@ -62,14 +63,31 @@ export default function InventoryItemCard({ item, isDarkMode, onDelete, onIncrem
                     >
                         −
                     </Button>
-                    <Button
-                        onClick={handleDelete}
-                        style={{ ...styles.button, ...styles.footerButton, textDecoration: 'none' }}
-                        aria-label="Delete item"
-                        variant="link"
-                    >
-                        🗑️
-                    </Button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        {item.tags && item.tags.length > 0 && (
+                            <div style={styles.tagContainer}>
+                                {item.tags.map((tag, index) => (
+                                    <span
+                                        key={index}
+                                        style={{
+                                            ...styles.tagLabel,
+                                            backgroundColor: getTagColor(tag)
+                                        }}
+                                    >
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                        <Button
+                            onClick={handleDelete}
+                            style={{ ...styles.button, ...styles.footerButton, textDecoration: 'none' }}
+                            aria-label="Delete item"
+                            variant="link"
+                        >
+                            🗑️
+                        </Button>
+                    </div>
                 </div>
             </Card.Body>
         </Card>

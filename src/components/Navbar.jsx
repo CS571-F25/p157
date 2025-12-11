@@ -35,6 +35,13 @@ export default function NavigationBar({ isDarkMode, toggleTheme }) {
                 </Nav.Link>
                 <Nav.Link 
                     as={Link} 
+                    to="/tags"
+                    style={styles.getNavLink(isActive('/tags'), isDarkMode)}
+                >
+                    Tags
+                </Nav.Link>
+                <Nav.Link 
+                    as={Link} 
                     to="/about"
                     style={styles.getNavLink(isActive('/about'), isDarkMode)}
                 >

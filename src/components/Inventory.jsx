@@ -8,6 +8,7 @@ import InventoryUndo from './InventoryUndo'
 import InventoryItemUndoAdd from './InventoryItemUndoAdd'
 import { InventoryContext } from '../contexts/InventoryContext'
 import { getPageStyles } from '../Styles'
+import { getAllTags, getTagColor } from '../utils/tags'
 
 export default function Inventory({ isDarkMode })
 {
@@ -15,6 +16,7 @@ export default function Inventory({ isDarkMode })
     const [inputValue, setInputValue] = useState('')
     const [quantity, setQuantity] = useState(1)
     const [minDesiredStock, setMinDesiredStock] = useState(0)
+    const [selectedTag, setSelectedTag] = useState('')
     const [isAddButtonHovered, setIsAddButtonHovered] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
@@ -24,6 +26,7 @@ export default function Inventory({ isDarkMode })
     const [undoInfo, setUndoInfo] = useState(null)
     const [undoAddInfo, setUndoAddInfo] = useState(null)
     const nameInputRef = useRef(null)
+    const tagSelectRef = useRef(null)
 
     const styles = getPageStyles(isDarkMode)
 
@@ -59,6 +62,25 @@ export default function Inventory({ isDarkMode })
                 return a.name.localeCompare(b.name)
             } else if (sortOption === 'stock') {
                 return a.quantity - b.quantity
+            } else if (sortOption === 'tag') {
+                // Items with tags come first
+                const aHasTags = a.tags && a.tags.length > 0
+                const bHasTags = b.tags && b.tags.length > 0
+                
+                if (aHasTags && !bHasTags) return -1
+                if (!aHasTags && bHasTags) return 1
+                if (!aHasTags && !bHasTags) return a.name.localeCompare(b.name)
+                
+                // Both have tags - sort by first tag name
+                const aFirstTag = a.tags[0] || ''
+                const bFirstTag = b.tags[0] || ''
+                const tagCompare = aFirstTag.localeCompare(bFirstTag)
+                
+                // If same tag, sort by name
+                if (tagCompare === 0) {
+                    return a.name.localeCompare(b.name)
+                }
+                return tagCompare
             }
             return 0
         })
@@ -69,7 +91,8 @@ export default function Inventory({ isDarkMode })
     const handleAddItem = () => {
         if (inputValue.trim() !== '') {
             const itemName = inputValue.trim()
-            addItem(itemName, quantity, minDesiredStock)
+            const tags = selectedTag ? [selectedTag] : []
+            addItem(itemName, quantity, minDesiredStock, tags)
             // Store undo info for the added item
             setUndoAddInfo({
                 itemName: itemName
@@ -77,13 +100,32 @@ export default function Inventory({ isDarkMode })
             setInputValue('')
             setQuantity(1)
             setMinDesiredStock(0)
+            setSelectedTag('')
             nameInputRef.current?.focus()
         }
     }
 
+    // Get all unique tags from existing items plus all available tags
+    const allTags = useMemo(() => {
+        const itemTags = new Set(getAllTags())
+        items.forEach(item => {
+            if (item.tags && Array.isArray(item.tags)) {
+                item.tags.forEach(tag => itemTags.add(tag))
+            }
+        })
+        return Array.from(itemTags).sort()
+    }, [items])
+
     const handleKeyPress = (e) => {
-        if (e.key === 'Enter' && inputValue.trim() !== '') {
-            handleAddItem()
+        if (e.key === 'Enter') {
+            // If tag select is focused, prevent adding item (native select will expand on Enter)
+            if (focusedInput === 'tag') {
+                e.preventDefault()
+                e.stopPropagation()
+                return
+            } else if (inputValue.trim() !== '') {
+                handleAddItem()
+            }
         }
     }
 
@@ -132,7 +174,7 @@ export default function Inventory({ isDarkMode })
                         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                             <DropdownButton
                                 id="sort-dropdown"
-                                title={`Sort: ${sortOption === 'name' ? 'Name' : 'Stock'}`}
+                                title={`Sort: ${sortOption === 'name' ? 'Name' : sortOption === 'stock' ? 'Stock' : 'Tag'}`}
                                 variant="outline-secondary"
                                 size="sm"
                             >
@@ -142,12 +184,18 @@ export default function Inventory({ isDarkMode })
                                 >
                                     Name
                                 </Dropdown.Item>
-                                <Dropdown.Item 
-                                    active={sortOption === 'stock'}
-                                    onClick={() => setSortOption('stock')}
-                                >
-                                    Stock
-                                </Dropdown.Item>
+                            <Dropdown.Item 
+                                active={sortOption === 'stock'}
+                                onClick={() => setSortOption('stock')}
+                            >
+                                Stock
+                            </Dropdown.Item>
+                            <Dropdown.Item 
+                                active={sortOption === 'tag'}
+                                onClick={() => setSortOption('tag')}
+                            >
+                                Tag
+                            </Dropdown.Item>
                             </DropdownButton>
                             <ButtonGroup>
                                 <ToggleButton
@@ -176,7 +224,7 @@ export default function Inventory({ isDarkMode })
                         </div>
                     </div>
                     <Form.Group className="mb-3">
-                        <InputGroup>
+                        <InputGroup style={{ flexWrap: 'nowrap' }}>
                             <Form.Control
                                 ref={nameInputRef}
                                 type="text"
@@ -188,10 +236,8 @@ export default function Inventory({ isDarkMode })
                                 onBlur={() => setFocusedInput(null)}
                                 style={{
                                     ...styles.nameInput,
-                                    width: focusedInput === 'quantity' || focusedInput === 'minDesiredStock' 
-                                        ? 'calc(50% - 70px)' 
-                                        : '50%',
-                                    transition: 'width 0.2s ease'
+                                    flex: '1 1 auto',
+                                    minWidth: 0
                                 }}
                                 aria-label="Search / Add item"
                             />
@@ -204,7 +250,7 @@ export default function Inventory({ isDarkMode })
                                 onKeyDown={handleKeyPress}
                                 onFocus={() => setFocusedInput('quantity')}
                                 onBlur={() => setFocusedInput(null)}
-                                style={focusedInput === 'quantity' ? styles.quantityInputFocused : styles.quantityInput}
+                                style={{ ...styles.quantityInput, width: '50px', minWidth: '50px', maxWidth: '50px' }}
                                 aria-label="Specify Quantity"
                             />
                             <InputGroup.Text>Min:</InputGroup.Text>
@@ -216,9 +262,42 @@ export default function Inventory({ isDarkMode })
                                 onKeyDown={handleKeyPress}
                                 onFocus={() => setFocusedInput('minDesiredStock')}
                                 onBlur={() => setFocusedInput(null)}
-                                style={focusedInput === 'minDesiredStock' ? styles.quantityInputFocused : styles.quantityInput}
+                                style={{ ...styles.quantityInput, width: '50px', minWidth: '50px', maxWidth: '50px' }}
                                 aria-label="Specify Minimum Desired Stock"
                             />
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                <Form.Select
+                                    ref={tagSelectRef}
+                                    value={selectedTag}
+                                    onChange={(e) => setSelectedTag(e.target.value)}
+                                    onKeyDown={handleKeyPress}
+                                    onFocus={() => setFocusedInput('tag')}
+                                    onBlur={() => setFocusedInput(null)}
+                                    style={styles.tagSelect}
+                                    aria-label="Select tag"
+                                >
+                                    <option value="">No tag</option>
+                                    {allTags.map(tag => (
+                                        <option key={tag} value={tag}>
+                                            {tag}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                                {selectedTag && (
+                                    <span
+                                        style={{
+                                            width: '20px',
+                                            height: '20px',
+                                            borderRadius: '50%',
+                                            backgroundColor: getTagColor(selectedTag),
+                                            border: '2px solid var(--bs-border-color)',
+                                            flexShrink: 0
+                                        }}
+                                        title={selectedTag}
+                                        aria-label={`Selected tag: ${selectedTag}`}
+                                    />
+                                )}
+                            </div>
                             <Button
                                 onClick={handleAddItem}
                                 disabled={inputValue.trim() === ''}
