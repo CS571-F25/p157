@@ -1,4 +1,4 @@
-import { useState, useRef, useContext, useMemo } from 'react'
+import { useState, useRef, useContext, useMemo, useEffect } from 'react'
 import { Button, Container, Row, Col, Form, ListGroup, InputGroup, ButtonGroup, ToggleButton, DropdownButton, Dropdown } from 'react-bootstrap'
 import Fuse from 'fuse.js'
 import InventoryItem from './InventoryItem'
@@ -21,8 +21,28 @@ export default function Inventory({ isDarkMode })
     const [showModal, setShowModal] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
     const [focusedInput, setFocusedInput] = useState(null)
-    const [viewMode, setViewMode] = useState('list') // 'list' or 'grid'
-    const [sortOption, setSortOption] = useState('name') // 'name' or 'stock'
+    
+    // Load view mode and sort option from localStorage
+    const loadViewMode = () => {
+        try {
+            const stored = localStorage.getItem('inventoryViewMode')
+            return stored === 'grid' ? 'grid' : 'list'
+        } catch (error) {
+            return 'list'
+        }
+    }
+    
+    const loadSortOption = () => {
+        try {
+            const stored = localStorage.getItem('inventorySortOption')
+            return stored === 'stock' || stored === 'tag' ? stored : 'name'
+        } catch (error) {
+            return 'name'
+        }
+    }
+    
+    const [viewMode, setViewMode] = useState(loadViewMode) // 'list' or 'grid'
+    const [sortOption, setSortOption] = useState(loadSortOption) // 'name', 'stock', or 'tag'
     const [undoInfo, setUndoInfo] = useState(null)
     const [undoAddInfo, setUndoAddInfo] = useState(null)
     const [tagDropdownOpen, setTagDropdownOpen] = useState(false)
@@ -30,6 +50,24 @@ export default function Inventory({ isDarkMode })
     const tagSelectRef = useRef(null)
 
     const styles = getPageStyles(isDarkMode)
+
+    // Save view mode to localStorage when it changes
+    useEffect(() => {
+        try {
+            localStorage.setItem('inventoryViewMode', viewMode)
+        } catch (error) {
+            console.error('Error saving view mode to localStorage:', error)
+        }
+    }, [viewMode])
+
+    // Save sort option to localStorage when it changes
+    useEffect(() => {
+        try {
+            localStorage.setItem('inventorySortOption', sortOption)
+        } catch (error) {
+            console.error('Error saving sort option to localStorage:', error)
+        }
+    }, [sortOption])
 
     const handleItemClick = (item) => {
         setSelectedItem(item)
