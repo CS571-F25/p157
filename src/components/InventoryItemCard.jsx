@@ -37,52 +37,33 @@ export default function InventoryItemCard({ item, isDarkMode, onDelete, onIncrem
                 <Card.Title style={isLowStock ? { ...styles.cardTitle, ...styles.lowStockName } : styles.cardTitle}>
                     {item.name}
                 </Card.Title>
-                <div style={styles.cardFooter}>
-                    <Button
-                        onClick={(e) => {
-                            e.stopPropagation()
-                            onIncrement()
-                        }}
-                        style={{ ...styles.button, ...styles.footerButton, textDecoration: 'none' }}
-                        aria-label="Increment quantity"
-                        variant="link"
-                    >
-                        +
-                    </Button>
-                    <span style={isLowStock ? { ...styles.quantity, ...styles.lowStockName, ...styles.footerButton } : { ...styles.quantity, ...styles.footerButton }}>
-                        {item.quantity}
-                    </span>
-                    <Button
-                        onClick={(e) => {
-                            e.stopPropagation()
-                            onDecrement()
-                        }}
-                        style={{ ...styles.button, ...styles.footerButton, textDecoration: 'none' }}
-                        aria-label="Decrement quantity"
-                        variant="link"
-                    >
-                        −
-                    </Button>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                        {item.tags && item.tags.length > 0 && (
-                            <div style={styles.tagContainer}>
-                                {item.tags.map((tag, index) => {
-                                    const tagColor = getTagColor(tag)
-                                    return (
-                                        <span
-                                            key={index}
-                                            style={{
-                                                ...styles.tagLabel,
-                                                backgroundColor: tagColor,
-                                                color: getTagTextColor(tagColor)
-                                            }}
-                                        >
-                                            {tag}
-                                        </span>
-                                    )
-                                })}
-                            </div>
-                        )}
+                <div>
+                    <div style={styles.cardFooter}>
+                        <Button
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                onIncrement()
+                            }}
+                            style={{ ...styles.button, ...styles.footerButton, textDecoration: 'none' }}
+                            aria-label="Increment quantity"
+                            variant="link"
+                        >
+                            +
+                        </Button>
+                        <span style={isLowStock ? { ...styles.quantity, ...styles.lowStockName, ...styles.footerButton } : { ...styles.quantity, ...styles.footerButton }}>
+                            {item.quantity}
+                        </span>
+                        <Button
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                onDecrement()
+                            }}
+                            style={{ ...styles.button, ...styles.footerButton, textDecoration: 'none' }}
+                            aria-label="Decrement quantity"
+                            variant="link"
+                        >
+                            −
+                        </Button>
                         <Button
                             onClick={handleDelete}
                             style={{ ...styles.button, ...styles.footerButton, textDecoration: 'none' }}
@@ -91,6 +72,25 @@ export default function InventoryItemCard({ item, isDarkMode, onDelete, onIncrem
                         >
                             🗑️
                         </Button>
+                    </div>
+                    <div style={{ ...styles.tagContainer, marginTop: '10px', justifyContent: 'center', minHeight: '24px' }}>
+                        {item.tags && item.tags.length > 0 && (
+                            item.tags.map((tag, index) => {
+                                const tagColor = getTagColor(tag)
+                                return (
+                                    <span
+                                        key={index}
+                                        style={{
+                                            ...styles.tagLabel,
+                                            backgroundColor: tagColor,
+                                            color: getTagTextColor(tagColor)
+                                        }}
+                                    >
+                                        {tag}
+                                    </span>
+                                )
+                            })
+                        )}
                     </div>
                 </div>
             </Card.Body>
