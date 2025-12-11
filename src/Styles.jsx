@@ -337,7 +337,8 @@ export const getShoppingListItemStyles = (isDarkMode) => {
       color: colors.text,
       borderColor: colors.itemBorder,
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
+      opacity: 1
     },
     contentContainer: {
       display: 'flex',
@@ -361,6 +362,11 @@ export const getShoppingListItemStyles = (isDarkMode) => {
     },
     itemName: {
       flex: 1
+    },
+    fading: {
+      opacity: 0,
+      transition: 'opacity 0.5s ease-out',
+      pointerEvents: 'none'
     }
   }
 }

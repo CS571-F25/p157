@@ -22,9 +22,9 @@ export default function ShoppingList({ isDarkMode })
                     <h1 className="mb-4" style={pageStyles.heading}>Shopping List</h1>
                     {lowQuantityItems.length > 0 ? (
                         <ListGroup>
-                            {lowQuantityItems.map((item, index) => (
+                            {lowQuantityItems.map((item) => (
                                 <ShoppingListItem
-                                    key={index}
+                                    key={item.name}
                                     item={item}
                                     isDarkMode={isDarkMode}
                                     onCheck={() => setQuantityToMinDesiredStock(item.name)}
