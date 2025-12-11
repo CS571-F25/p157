@@ -63,7 +63,7 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
             </div>
             <Button
                 onClick={handleDelete}
-                style={{ ...styles.button, textDecoration: 'none' }}
+                style={{ ...styles.button, ...styles.deleteButton, textDecoration: 'none' }}
                 aria-label="Delete item"
                 variant="link"
             >

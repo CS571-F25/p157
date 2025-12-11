@@ -175,6 +175,13 @@ export const getInventoryItemStyles = (isDarkMode) => {
       lineHeight: '1',
       textDecoration: 'none'
     },
+    deleteButton: {
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'stretch'
+    },
     quantity: {
       margin: '0 5px'
     },

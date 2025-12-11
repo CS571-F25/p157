@@ -20,7 +20,7 @@ export default function ShoppingListUndo({ itemName, isDarkMode, onUndo, onDismi
                     Dismiss
                 </Button>
                 <Button
-                    variant="outline-success"
+                    variant="success"
                     onClick={onUndo}
                     style={styles.undoButton}
                 >

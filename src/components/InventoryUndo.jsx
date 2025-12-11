@@ -20,7 +20,7 @@ export default function InventoryUndo({ itemName, isDarkMode, onUndo, onDismiss 
                     Dismiss
                 </Button>
                 <Button
-                    variant="outline-danger"
+                    variant="danger"
                     onClick={onUndo}
                     style={styles.undoButton}
                 >
