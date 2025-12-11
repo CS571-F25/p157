@@ -4,9 +4,8 @@ This project is meant to serve as an inventory manager, allowing the user to cre
 
 ## Base features:
 - [x] Add items to your inventory, specifying your current stock of the item if desired
-- [ ] Give your items premade or custom tags
-- [ ] Search through your inventory by name or by tags
-- [ ] Note a decrease in your stock of an item
+- [x] Give your items premade or custom tags
+- [x] Search through your inventory by name or by tags
 - [x] Set a minimum stock of an item you wish to maintain
 - [x] See a shopping list with items which have gone below their minimum stock
 minimum stock
