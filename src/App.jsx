@@ -107,9 +107,10 @@ function App()
 	const updateItem = (oldName, newName, newQuantity, newMinDesiredStock = null) => {
 		const updatedItems = items.map(item => {
 			if (item.name === oldName) {
+				const parsedQuantity = parseInt(newQuantity)
 				return { 
 					name: newName, 
-					quantity: parseInt(newQuantity) || 1,
+					quantity: isNaN(parsedQuantity) ? 1 : parsedQuantity,
 					minDesiredStock: newMinDesiredStock !== null ? (parseInt(newMinDesiredStock) || 1) : (item.minDesiredStock ?? 1)
 				}
 			}
