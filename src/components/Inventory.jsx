@@ -54,7 +54,7 @@ export default function Inventory({ isDarkMode })
             addItem(itemName, quantity, minDesiredStock)
             setInputValue('')
             setQuantity(1)
-            setMinDesiredStock(1)
+            setMinDesiredStock(0)
             nameInputRef.current?.focus()
         }
     }
