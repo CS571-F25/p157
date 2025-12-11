@@ -187,6 +187,11 @@ export const getInventoryItemStyles = (isDarkMode) => {
     lowStockName: {
       color: isDarkMode ? '#ffb3ba' : '#c62828',
       fontWeight: 'bold'
+    },
+    fading: {
+      opacity: 0,
+      transition: 'opacity 0.5s ease-out',
+      pointerEvents: 'none'
     }
   }
 }
@@ -254,6 +259,11 @@ export const getInventoryItemCardStyles = (isDarkMode) => {
     lowStockName: {
       color: isDarkMode ? '#ffb3ba' : '#c62828',
       fontWeight: 'bold'
+    },
+    fading: {
+      opacity: 0,
+      transition: 'opacity 0.5s ease-out',
+      pointerEvents: 'none'
     }
   }
 }
@@ -394,6 +404,28 @@ export const getShoppingListUndoStyles = (isDarkMode) => {
       marginTop: '15px'
     },
     undoButton: {
+      textDecoration: 'none'
+    },
+    dismissButton: {
+      textDecoration: 'none'
+    }
+  }
+}
+
+// InventoryUndo.jsx styles
+export const getInventoryUndoStyles = (isDarkMode) => {
+  const colors = isDarkMode ? themeColors.dark : themeColors.light
+  return {
+    alert: {
+      backgroundColor: isDarkMode ? '#5a1a1a' : '#f8d7da',
+      borderColor: isDarkMode ? '#7a2a2a' : '#f5c2c7',
+      color: colors.text,
+      marginTop: '15px'
+    },
+    undoButton: {
+      textDecoration: 'none'
+    },
+    dismissButton: {
       textDecoration: 'none'
     }
   }

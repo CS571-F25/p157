@@ -1,16 +1,16 @@
 import { Alert, Button } from 'react-bootstrap'
-import { getShoppingListUndoStyles } from '../Styles'
+import { getInventoryUndoStyles } from '../Styles'
 
-export default function ShoppingListUndo({ itemName, isDarkMode, onUndo, onDismiss }) {
-    const styles = getShoppingListUndoStyles(isDarkMode)
+export default function InventoryUndo({ itemName, isDarkMode, onUndo, onDismiss }) {
+    const styles = getInventoryUndoStyles(isDarkMode)
 
     return (
         <Alert 
-            variant="success" 
+            variant="danger" 
             style={styles.alert}
             className="d-flex justify-content-between align-items-center"
         >
-            <span>Restocked item {itemName}</span>
+            <span>Removed item {itemName}</span>
             <div style={{ display: 'flex', gap: '10px' }}>
                 <Button
                     variant="outline-secondary"
@@ -20,7 +20,7 @@ export default function ShoppingListUndo({ itemName, isDarkMode, onUndo, onDismi
                     Dismiss
                 </Button>
                 <Button
-                    variant="outline-success"
+                    variant="outline-danger"
                     onClick={onUndo}
                     style={styles.undoButton}
                 >

@@ -133,6 +133,12 @@ function App()
 		updateItems(updatedItems)
 	}
 
+	const restoreItem = (item) => {
+		// Restore an item with its exact properties
+		const updatedItems = [...items, item]
+		updateItems(updatedItems)
+	}
+
 	useEffect(() => {
 		if (isDarkMode) {
 			document.body.style.backgroundColor = '#242424'
@@ -146,7 +152,7 @@ function App()
 	const styles = getAppStyles(isDarkMode, sidebarVisible)
 
 	return <HashRouter>
-		<InventoryContext.Provider value={{ items, addItem, deleteItem, incrementQuantity, decrementQuantity, updateItem, setQuantityToMinDesiredStock }}>
+		<InventoryContext.Provider value={{ items, addItem, deleteItem, incrementQuantity, decrementQuantity, updateItem, setQuantityToMinDesiredStock, restoreItem }}>
 			<Button
 				onClick={toggleSidebar}
 				style={{ ...styles.hamburgerButton, textDecoration: 'none' }}

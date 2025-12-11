@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { ListGroup, Button } from 'react-bootstrap'
 import { getInventoryItemStyles } from '../Styles'
 
 export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement, onDecrement, onClick }) {
+    const [isFading, setIsFading] = useState(false)
     const styles = getInventoryItemStyles(isDarkMode)
     const minDesiredStock = item.minDesiredStock ?? 1
     const isLowStock = item.quantity < minDesiredStock
@@ -14,9 +16,20 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
         onClick()
     }
 
+    const handleDelete = (e) => {
+        e.stopPropagation()
+        if (!isFading) {
+            setIsFading(true)
+            // Wait for fade animation to complete before calling onDelete
+            setTimeout(() => {
+                onDelete()
+            }, 500) // 500ms = half a second
+        }
+    }
+
     return (
         <ListGroup.Item 
-            style={{ ...styles.listItem, cursor: 'pointer' }}
+            style={{ ...styles.listItem, ...(isFading ? styles.fading : {}), cursor: 'pointer' }}
             onClick={handleItemClick}
         >
             <div style={styles.controlsContainer}>
@@ -49,10 +62,7 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
                 <span style={isLowStock ? styles.lowStockName : {}}>{item.name}</span>
             </div>
             <Button
-                onClick={(e) => {
-                    e.stopPropagation()
-                    onDelete()
-                }}
+                onClick={handleDelete}
                 style={{ ...styles.button, textDecoration: 'none' }}
                 aria-label="Delete item"
                 variant="link"

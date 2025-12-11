@@ -4,12 +4,13 @@ import Fuse from 'fuse.js'
 import InventoryItem from './InventoryItem'
 import InventoryItemCard from './InventoryItemCard'
 import InventoryItemModal from './InventoryItemModal'
+import InventoryUndo from './InventoryUndo'
 import { InventoryContext } from '../contexts/InventoryContext'
 import { getPageStyles } from '../Styles'
 
 export default function Inventory({ isDarkMode })
 {
-    const { items, addItem, deleteItem, incrementQuantity, decrementQuantity, updateItem } = useContext(InventoryContext)
+    const { items, addItem, deleteItem, incrementQuantity, decrementQuantity, updateItem, restoreItem } = useContext(InventoryContext)
     const [inputValue, setInputValue] = useState('')
     const [quantity, setQuantity] = useState(1)
     const [minDesiredStock, setMinDesiredStock] = useState(0)
@@ -18,6 +19,7 @@ export default function Inventory({ isDarkMode })
     const [selectedItem, setSelectedItem] = useState(null)
     const [focusedInput, setFocusedInput] = useState(null)
     const [viewMode, setViewMode] = useState('list') // 'list' or 'grid'
+    const [undoInfo, setUndoInfo] = useState(null)
     const nameInputRef = useRef(null)
 
     const styles = getPageStyles(isDarkMode)
@@ -66,7 +68,26 @@ export default function Inventory({ isDarkMode })
     }
 
     const handleDelete = (itemName) => {
-        deleteItem(itemName)
+        // Find the item to get its full data for potential undo
+        const item = items.find(i => i.name === itemName)
+        if (item) {
+            // Store the full item data for undo
+            setUndoInfo({
+                item: { ...item }
+            })
+            deleteItem(itemName)
+        }
+    }
+
+    const handleUndo = () => {
+        if (undoInfo && undoInfo.item) {
+            restoreItem(undoInfo.item)
+            setUndoInfo(null)
+        }
+    }
+
+    const handleDismiss = () => {
+        setUndoInfo(null)
     }
 
     return (
@@ -182,9 +203,9 @@ export default function Inventory({ isDarkMode })
                         <Row className="justify-content-center">
                             <Col md={6}>
                                 <ListGroup>
-                                    {sortedItems.map((item, index) => (
+                                    {sortedItems.map((item) => (
                                         <InventoryItem 
-                                            key={index} 
+                                            key={item.name} 
                                             item={item} 
                                             isDarkMode={isDarkMode}
                                             onDelete={() => handleDelete(item.name)}
@@ -198,8 +219,8 @@ export default function Inventory({ isDarkMode })
                         </Row>
                     ) : (
                         <Row>
-                            {sortedItems.map((item, index) => (
-                                <Col key={index} xs={12} sm={6} md={4} lg={3} xl={2} className="mb-3">
+                            {sortedItems.map((item) => (
+                                <Col key={item.name} xs={12} sm={6} md={4} lg={3} xl={2} className="mb-3">
                                     <InventoryItemCard
                                         item={item}
                                         isDarkMode={isDarkMode}
@@ -210,6 +231,31 @@ export default function Inventory({ isDarkMode })
                                     />
                                 </Col>
                             ))}
+                        </Row>
+                    )
+                )}
+                {undoInfo && (
+                    viewMode === 'list' ? (
+                        <Row className="justify-content-center">
+                            <Col md={6}>
+                                <InventoryUndo
+                                    itemName={undoInfo.item.name}
+                                    isDarkMode={isDarkMode}
+                                    onUndo={handleUndo}
+                                    onDismiss={handleDismiss}
+                                />
+                            </Col>
+                        </Row>
+                    ) : (
+                        <Row>
+                            <Col>
+                                <InventoryUndo
+                                    itemName={undoInfo.item.name}
+                                    isDarkMode={isDarkMode}
+                                    onUndo={handleUndo}
+                                    onDismiss={handleDismiss}
+                                />
+                            </Col>
                         </Row>
                     )
                 )}

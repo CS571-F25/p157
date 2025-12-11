@@ -43,6 +43,10 @@ export default function ShoppingList({ isDarkMode })
         }
     }
 
+    const handleDismiss = () => {
+        setUndoInfo(null)
+    }
+
     return (
         <Container className="mt-5" style={pageStyles.container}>
             <Row className="justify-content-center">
@@ -65,6 +69,7 @@ export default function ShoppingList({ isDarkMode })
                                     itemName={undoInfo.itemName}
                                     isDarkMode={isDarkMode}
                                     onUndo={handleUndo}
+                                    onDismiss={handleDismiss}
                                 />
                             )}
                         </>
@@ -76,6 +81,7 @@ export default function ShoppingList({ isDarkMode })
                                     itemName={undoInfo.itemName}
                                     isDarkMode={isDarkMode}
                                     onUndo={handleUndo}
+                                    onDismiss={handleDismiss}
                                 />
                             )}
                         </>

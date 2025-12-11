@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { getInventoryItemCardStyles } from '../Styles'
 
 export default function InventoryItemCard({ item, isDarkMode, onDelete, onIncrement, onDecrement, onClick }) {
+    const [isFading, setIsFading] = useState(false)
     const styles = getInventoryItemCardStyles(isDarkMode)
     const minDesiredStock = item.minDesiredStock ?? 1
     const isLowStock = item.quantity < minDesiredStock
@@ -14,9 +16,20 @@ export default function InventoryItemCard({ item, isDarkMode, onDelete, onIncrem
         onClick()
     }
 
+    const handleDelete = (e) => {
+        e.stopPropagation()
+        if (!isFading) {
+            setIsFading(true)
+            // Wait for fade animation to complete before calling onDelete
+            setTimeout(() => {
+                onDelete()
+            }, 500) // 500ms = half a second
+        }
+    }
+
     return (
         <Card 
-            style={{ ...styles.card, cursor: 'pointer' }}
+            style={{ ...styles.card, ...(isFading ? styles.fading : {}), cursor: 'pointer' }}
             onClick={handleCardClick}
         >
             <Card.Body style={styles.cardBody}>
@@ -50,10 +63,7 @@ export default function InventoryItemCard({ item, isDarkMode, onDelete, onIncrem
                         −
                     </Button>
                     <Button
-                        onClick={(e) => {
-                            e.stopPropagation()
-                            onDelete()
-                        }}
+                        onClick={handleDelete}
                         style={{ ...styles.button, ...styles.footerButton, textDecoration: 'none' }}
                         aria-label="Delete item"
                         variant="link"
