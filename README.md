@@ -11,7 +11,7 @@ This project is meant to serve as an inventory manager, allowing the user to cre
 - [x] See a shopping list with items which have gone below their minimum stock
 minimum stock
 - [x] Client-side storage of inventory (i.e. per-browser)
-- [ ] Mobile-friendly design.
+- [x] Mobile-friendly design.
 
 ## Goal features:
 - [ ] Add items to your inventory by taking a picture of them
