@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { HashRouter, Route, Routes } from 'react-router'
-import { Container } from 'react-bootstrap'
+import { Container, Button } from 'react-bootstrap'
 import './App.css'
 import AboutMe from './components/AboutMe'
 import Inventory from './components/Inventory'
@@ -146,13 +146,14 @@ function App()
 
 	return <HashRouter>
 		<InventoryContext.Provider value={{ items, addItem, deleteItem, incrementQuantity, decrementQuantity, updateItem, setQuantityToMinDesiredStock }}>
-			<button
+			<Button
 				onClick={toggleSidebar}
-				style={styles.hamburgerButton}
+				style={{ ...styles.hamburgerButton, textDecoration: 'none' }}
 				aria-label="Toggle sidebar"
+				variant="outline-secondary"
 			>
 				☰
-			</button>
+			</Button>
 			<div style={styles.appContainer}>
 				<div style={styles.sidebarWrapper}>
 					<NavigationBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />

@@ -1,5 +1,5 @@
 import { useState, useRef, useContext, useMemo } from 'react'
-import { Container, Row, Col, Form, ListGroup, InputGroup } from 'react-bootstrap'
+import { Button, Container, Row, Col, Form, ListGroup, InputGroup } from 'react-bootstrap'
 import Fuse from 'fuse.js'
 import InventoryItem from './InventoryItem'
 import InventoryItemModal from './InventoryItemModal'
@@ -116,8 +116,7 @@ export default function Inventory({ isDarkMode })
                                 style={focusedInput === 'minDesiredStock' ? styles.quantityInputFocused : styles.quantityInput}
                                 aria-label="Specify Minimum Desired Stock"
                             />
-                            <button
-                                type="button"
+                            <Button
                                 onClick={handleAddItem}
                                 disabled={inputValue.trim() === ''}
                                 onKeyDown={(e) => {
@@ -130,12 +129,14 @@ export default function Inventory({ isDarkMode })
                                 style={{
                                     ...styles.addButton,
                                     ...(inputValue.trim() === '' ? styles.addButtonDisabled : {}),
-                                    ...(isAddButtonHovered && inputValue.trim() !== '' ? styles.addButtonHover : {})
+                                    ...(isAddButtonHovered && inputValue.trim() !== '' ? styles.addButtonHover : {}),
+                                    textDecoration: 'none'
                                 }}
                                 aria-label="Add item"
+                                variant="danger"
                             >
                                 Add
-                            </button>
+                            </Button>
                         </InputGroup>
                     </Form.Group>
                     {inputValue.trim() !== '' && (

@@ -1,4 +1,4 @@
-import { ListGroup } from 'react-bootstrap'
+import { ListGroup, Button } from 'react-bootstrap'
 import { getInventoryItemStyles } from '../Styles'
 
 export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement, onDecrement, onClick }) {
@@ -21,41 +21,44 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
         >
             <div style={styles.controlsContainer}>
                 <div style={styles.quantityControls}>
-                    <button
+                    <Button
                         onClick={(e) => {
                             e.stopPropagation()
                             onIncrement()
                         }}
-                        style={{ ...styles.button, ...styles.incrementButton }}
+                        style={{ ...styles.button, ...styles.incrementButton, textDecoration: 'none' }}
                         aria-label="Increment quantity"
+                        variant="link"
                     >
                         +
-                    </button>
+                    </Button>
                     <span style={isLowStock ? { ...styles.quantity, ...styles.lowStockName } : styles.quantity}>{item.quantity}</span>
-                    <button
+                    <Button
                         onClick={(e) => {
                             e.stopPropagation()
                             onDecrement()
                         }}
-                        style={{ ...styles.button, ...styles.decrementButton }}
+                        style={{ ...styles.button, ...styles.decrementButton, textDecoration: 'none' }}
                         aria-label="Decrement quantity"
+                        variant="link"
                     >
                         −
-                    </button>
+                    </Button>
                 </div>
                 <div style={styles.separator} />
                 <span style={isLowStock ? styles.lowStockName : {}}>{item.name}</span>
             </div>
-            <button
+            <Button
                 onClick={(e) => {
                     e.stopPropagation()
                     onDelete()
                 }}
-                style={styles.button}
+                style={{ ...styles.button, textDecoration: 'none' }}
                 aria-label="Delete item"
+                variant="link"
             >
                 🗑️
-            </button>
+            </Button>
         </ListGroup.Item>
     )
 }

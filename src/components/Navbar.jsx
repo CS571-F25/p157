@@ -1,4 +1,4 @@
-import { Nav } from 'react-bootstrap'
+import { Nav, Button } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router'
 import { getNavbarStyles } from '../Styles'
 
@@ -41,13 +41,14 @@ export default function NavigationBar({ isDarkMode, toggleTheme }) {
                     About
                 </Nav.Link>
             </Nav>
-            <button
+            <Button
                 onClick={toggleTheme}
-                style={styles.themeToggleButton}
+                style={{ ...styles.themeToggleButton, textDecoration: 'none' }}
                 aria-label="Toggle theme"
+                variant="link"
             >
                 {isDarkMode ? '☀️' : '🌙'}
-            </button>
+            </Button>
         </div>
     )
 }

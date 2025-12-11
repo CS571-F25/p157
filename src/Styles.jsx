@@ -43,7 +43,8 @@ export const getAppStyles = (isDarkMode, sidebarVisible) => {
       padding: '10px',
       cursor: 'pointer',
       borderRadius: '4px',
-      fontSize: '1.5rem'
+      fontSize: '1.5rem',
+      textDecoration: 'none'
     },
     appContainer: {
       display: 'flex',
@@ -114,7 +115,8 @@ export const getNavbarStyles = (isDarkMode) => {
       color: colors.sidebarText,
       cursor: 'pointer',
       fontSize: '1.5rem',
-      padding: '5px'
+      padding: '5px',
+      textDecoration: 'none'
     }
   }
 }
@@ -158,7 +160,8 @@ export const getInventoryItemStyles = (isDarkMode) => {
       cursor: 'pointer',
       fontSize: '1.2rem',
       padding: '0 5px',
-      lineHeight: '1'
+      lineHeight: '1',
+      textDecoration: 'none'
     },
     quantity: {
       margin: '0 5px'
@@ -232,7 +235,8 @@ export const getPageStyles = (isDarkMode) => {
       fontSize: '0.875rem',
       fontWeight: '500',
       borderRadius: '0.375rem',
-      transition: 'background-color 0.2s'
+      transition: 'background-color 0.2s',
+      textDecoration: 'none'
     },
     addButtonDisabled: {
       backgroundColor: '#6c757d',
@@ -277,7 +281,8 @@ export const getShoppingListItemStyles = (isDarkMode) => {
     checkbox: {
       cursor: 'pointer',
       width: '18px',
-      height: '18px'
+      height: '18px',
+      accentColor: isDarkMode ? '#ffffff' : '#d0d0d0'
     },
     checkmark: {
       color: '#28a745',
