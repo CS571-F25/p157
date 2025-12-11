@@ -47,7 +47,13 @@ export default function Inventory({ isDarkMode })
         // Apply search filter if there's a search query
         if (inputValue.trim()) {
             const fuse = new Fuse(items, {
-                keys: ['name'],
+                keys: [
+                    'name',
+                    {
+                        name: 'tags',
+                        getFn: (item) => item.tags ? item.tags.join(' ') : ''
+                    }
+                ],
                 threshold: 0.4, // 0.0 = perfect match, 1.0 = match anything
                 includeScore: true
             })
