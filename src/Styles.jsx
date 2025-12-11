@@ -188,40 +188,41 @@ export const getInventoryItemCardStyles = (isDarkMode) => {
       color: colors.text,
       borderColor: colors.itemBorder,
       marginBottom: '15px',
-      height: '100%'
-    },
-    cardHeader: {
+      height: '100%',
       display: 'flex',
+      flexDirection: 'column'
+    },
+    cardBody: {
+      display: 'flex',
+      flexDirection: 'column',
       justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '15px'
+      flex: 1,
+      padding: '1.25rem'
     },
     cardTitle: {
       color: colors.text,
-      fontSize: '1.25rem',
+      fontSize: '1.75rem',
       margin: 0,
-      flex: 1
-    },
-    quantitySection: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: '10px'
-    },
-    quantityControls: {
+      textAlign: 'center',
+      flex: 1,
       display: 'flex',
       alignItems: 'center',
-      width: '80px',
-      position: 'relative',
       justifyContent: 'center'
     },
-    incrementButton: {
-      position: 'absolute',
-      left: '0'
+    cardFooter: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 'auto',
+      width: '100%',
+      borderTop: `1px solid ${colors.itemBorder}`,
+      paddingTop: '10px'
     },
-    decrementButton: {
-      position: 'absolute',
-      right: '0'
+    footerButton: {
+      flex: '0 0 25%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     button: {
       backgroundColor: 'transparent',
@@ -237,11 +238,6 @@ export const getInventoryItemCardStyles = (isDarkMode) => {
       margin: '0 5px',
       fontSize: '1.5rem',
       fontWeight: 'bold'
-    },
-    minStockLabel: {
-      fontSize: '0.875rem',
-      opacity: 0.7,
-      color: colors.text
     },
     lowStockName: {
       color: isDarkMode ? '#ffb3ba' : '#c62828',

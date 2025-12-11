@@ -19,54 +19,47 @@ export default function InventoryItemCard({ item, isDarkMode, onDelete, onIncrem
             style={{ ...styles.card, cursor: 'pointer' }}
             onClick={handleCardClick}
         >
-            <Card.Body>
-                <div style={styles.cardHeader}>
-                    <Card.Title style={isLowStock ? { ...styles.cardTitle, ...styles.lowStockName } : styles.cardTitle}>
-                        {item.name}
-                    </Card.Title>
+            <Card.Body style={styles.cardBody}>
+                <Card.Title style={isLowStock ? { ...styles.cardTitle, ...styles.lowStockName } : styles.cardTitle}>
+                    {item.name}
+                </Card.Title>
+                <div style={styles.cardFooter}>
+                    <Button
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            onIncrement()
+                        }}
+                        style={{ ...styles.button, ...styles.footerButton, textDecoration: 'none' }}
+                        aria-label="Increment quantity"
+                        variant="link"
+                    >
+                        +
+                    </Button>
+                    <span style={isLowStock ? { ...styles.quantity, ...styles.lowStockName, ...styles.footerButton } : { ...styles.quantity, ...styles.footerButton }}>
+                        {item.quantity}
+                    </span>
+                    <Button
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            onDecrement()
+                        }}
+                        style={{ ...styles.button, ...styles.footerButton, textDecoration: 'none' }}
+                        aria-label="Decrement quantity"
+                        variant="link"
+                    >
+                        −
+                    </Button>
                     <Button
                         onClick={(e) => {
                             e.stopPropagation()
                             onDelete()
                         }}
-                        style={{ ...styles.button, textDecoration: 'none' }}
+                        style={{ ...styles.button, ...styles.footerButton, textDecoration: 'none' }}
                         aria-label="Delete item"
                         variant="link"
                     >
                         🗑️
                     </Button>
-                </div>
-                <div style={styles.quantitySection}>
-                    <div style={styles.quantityControls}>
-                        <Button
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                onIncrement()
-                            }}
-                            style={{ ...styles.button, ...styles.incrementButton, textDecoration: 'none' }}
-                            aria-label="Increment quantity"
-                            variant="link"
-                        >
-                            +
-                        </Button>
-                        <span style={isLowStock ? { ...styles.quantity, ...styles.lowStockName } : styles.quantity}>
-                            {item.quantity}
-                        </span>
-                        <Button
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                onDecrement()
-                            }}
-                            style={{ ...styles.button, ...styles.decrementButton, textDecoration: 'none' }}
-                            aria-label="Decrement quantity"
-                            variant="link"
-                        >
-                            −
-                        </Button>
-                    </div>
-                    <div style={styles.minStockLabel}>
-                        Min: {item.minDesiredStock ?? 1}
-                    </div>
                 </div>
             </Card.Body>
         </Card>
