@@ -70,9 +70,11 @@ export default function Inventory({ isDarkMode })
     }
 
     return (
-        <Container className="mt-5" style={styles.container} fluid={viewMode === 'grid'}>
-            <Row className={viewMode === 'list' ? 'justify-content-center' : ''}>
-                <Col md={viewMode === 'list' ? 6 : 12}>
+        <>
+            {/* Search bar section - always centered and constrained to same width */}
+            <Container className="mt-5" style={styles.container}>
+                <Row className="justify-content-center">
+                    <Col md={6}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                         <h1 className="mb-0" style={styles.heading}>Inventory</h1>
                         <ButtonGroup>
@@ -170,40 +172,48 @@ export default function Inventory({ isDarkMode })
                     {inputValue.trim() !== '' && (
                         <p style={styles.relevancyLabel}>Showing items by relevancy</p>
                     )}
-                    {sortedItems.length > 0 && (
-                        viewMode === 'list' ? (
-                            <ListGroup>
-                                {sortedItems.map((item, index) => (
-                                    <InventoryItem 
-                                        key={index} 
-                                        item={item} 
-                                        isDarkMode={isDarkMode}
-                                        onDelete={() => handleDelete(item.name)}
-                                        onIncrement={() => incrementQuantity(item.name)}
-                                        onDecrement={() => decrementQuantity(item.name)}
-                                        onClick={() => handleItemClick(item)}
-                                    />
-                                ))}
-                            </ListGroup>
-                        ) : (
-                            <Row>
-                                {sortedItems.map((item, index) => (
-                                    <Col key={index} xs={12} sm={6} md={4} lg={3} xl={2} className="mb-3">
-                                        <InventoryItemCard
-                                            item={item}
+                    </Col>
+                </Row>
+            </Container>
+            {/* Items section - full width in grid mode, centered in list mode */}
+            <Container className="mt-3" style={styles.container} fluid={viewMode === 'grid'}>
+                {sortedItems.length > 0 && (
+                    viewMode === 'list' ? (
+                        <Row className="justify-content-center">
+                            <Col md={6}>
+                                <ListGroup>
+                                    {sortedItems.map((item, index) => (
+                                        <InventoryItem 
+                                            key={index} 
+                                            item={item} 
                                             isDarkMode={isDarkMode}
                                             onDelete={() => handleDelete(item.name)}
                                             onIncrement={() => incrementQuantity(item.name)}
                                             onDecrement={() => decrementQuantity(item.name)}
                                             onClick={() => handleItemClick(item)}
                                         />
-                                    </Col>
-                                ))}
-                            </Row>
-                        )
-                    )}
-                </Col>
-            </Row>
+                                    ))}
+                                </ListGroup>
+                            </Col>
+                        </Row>
+                    ) : (
+                        <Row>
+                            {sortedItems.map((item, index) => (
+                                <Col key={index} xs={12} sm={6} md={4} lg={3} xl={2} className="mb-3">
+                                    <InventoryItemCard
+                                        item={item}
+                                        isDarkMode={isDarkMode}
+                                        onDelete={() => handleDelete(item.name)}
+                                        onIncrement={() => incrementQuantity(item.name)}
+                                        onDecrement={() => decrementQuantity(item.name)}
+                                        onClick={() => handleItemClick(item)}
+                                    />
+                                </Col>
+                            ))}
+                        </Row>
+                    )
+                )}
+            </Container>
             <InventoryItemModal
                 show={showModal}
                 item={selectedItem}
@@ -211,7 +221,7 @@ export default function Inventory({ isDarkMode })
                 updateItem={updateItem}
                 onHide={handleCloseModal}
             />
-        </Container>
+        </>
     )
 }
 
