@@ -20,27 +20,29 @@ export default function InventoryItem({ item, isDarkMode, onDelete, onIncrement,
             onClick={handleItemClick}
         >
             <div style={styles.controlsContainer}>
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation()
-                        onIncrement()
-                    }}
-                    style={styles.button}
-                    aria-label="Increment quantity"
-                >
-                    +
-                </button>
-                <span style={isLowStock ? { ...styles.quantity, ...styles.lowStockName } : styles.quantity}>{item.quantity}</span>
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation()
-                        onDecrement()
-                    }}
-                    style={styles.button}
-                    aria-label="Decrement quantity"
-                >
-                    −
-                </button>
+                <div style={styles.quantityControls}>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            onIncrement()
+                        }}
+                        style={{ ...styles.button, ...styles.incrementButton }}
+                        aria-label="Increment quantity"
+                    >
+                        +
+                    </button>
+                    <span style={isLowStock ? { ...styles.quantity, ...styles.lowStockName } : styles.quantity}>{item.quantity}</span>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            onDecrement()
+                        }}
+                        style={{ ...styles.button, ...styles.decrementButton }}
+                        aria-label="Decrement quantity"
+                    >
+                        −
+                    </button>
+                </div>
                 <div style={styles.separator} />
                 <span style={isLowStock ? styles.lowStockName : {}}>{item.name}</span>
             </div>

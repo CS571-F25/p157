@@ -136,6 +136,21 @@ export const getInventoryItemStyles = (isDarkMode) => {
       alignItems: 'center',
       gap: '5px'
     },
+    quantityControls: {
+      display: 'flex',
+      alignItems: 'center',
+      width: '80px',
+      position: 'relative',
+      justifyContent: 'center'
+    },
+    incrementButton: {
+      position: 'absolute',
+      left: '0'
+    },
+    decrementButton: {
+      position: 'absolute',
+      right: '0'
+    },
     button: {
       backgroundColor: 'transparent',
       border: 'none',
